@@ -9,7 +9,7 @@ function TaskList(){
 
     const {request, loading, error, clearError} = useHttp();
     const loadTasks = async () => {
-        clearError();
+        if(error) clearError();
 		const res = await request();
 		setTasks(res);
 	}
