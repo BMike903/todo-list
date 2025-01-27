@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import "./taskList.css"
 import { Task } from "../lib/types";
 import { useHttp } from "../hooks/useHttp";
 
@@ -8,6 +9,7 @@ function TaskList(){
 
     const {request, loading, error, clearError} = useHttp();
     const loadTasks = async () => {
+        clearError();
 		const res = await request();
 		setTasks(res);
 	}
@@ -15,6 +17,10 @@ function TaskList(){
 	useEffect(() => {
 		loadTasks();
 	}, []);
+
+    const checkTaskStatus = (id: number) => {
+        console.log(id);
+    }
 
     const renderTasks = () => {
         if(error){
@@ -31,7 +37,11 @@ function TaskList(){
 		else{
             return (
                 <ul>
-                    {tasks.map(item => <li key={item.id}>{item.title}</li>)}
+                    {tasks.map(item => (
+                        <li key={item.id}>
+                            <input type="checkbox" checked={item.completed} onChange={() => checkTaskStatus(item.id)}/>
+                            {item.title}
+                        </li>))}
                 </ul>
             )
         }
