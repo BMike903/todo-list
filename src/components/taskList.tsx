@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 
+import { Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+
 import "./taskList.css"
 import { Task } from "../lib/types";
 import { useHttp } from "../hooks/useHttp";
+
 
 function TaskList(){
 	const [tasks, setTasks] = useState<Array<Task>>([]);
@@ -18,7 +24,7 @@ function TaskList(){
 		loadTasks();
 	}, []);
 
-    const checkTaskStatus = (id: number) => {
+    const changeTaskStatus = (id: number) => {
         console.log(id);
     }
 
@@ -27,7 +33,7 @@ function TaskList(){
             return(
                 <div>
                     <div>Error occured while loading tasks</div>
-                    <button onClick={loadTasks}>Try to load again</button>
+                    <Button variant="contained" onClick={loadTasks}>Try to load again</Button>
                 </div>
             ) 
         }
@@ -36,21 +42,22 @@ function TaskList(){
 		}
 		else{
             return (
-                <ul>
+                <>
                     {tasks.map(item => (
-                        <li key={item.id}>
-                            <input type="checkbox" checked={item.completed} onChange={() => checkTaskStatus(item.id)}/>
+                        <Box key={item.id} sx={{ border: '1px solid' }}>
+                            <Checkbox checked={item.completed} onChange={() => changeTaskStatus(item.id)}/>
                             {item.title}
-                        </li>))}
-                </ul>
+                        </Box>))
+                    }
+                </>
             )
         }
     }
 
     return(
-        <ul>
+        <Stack spacing={2}>
             {renderTasks()}
-        </ul>
+        </Stack>
     )
 }
 

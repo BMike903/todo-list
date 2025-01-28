@@ -1,9 +1,11 @@
 import TaskList from './components/taskList';
-
+import Container from '@mui/material/Container';
 function App() {
 	return (
 		<>
-			<TaskList />
+			<Container>
+				<TaskList />
+			</Container>
 		</>
 	)
 }
