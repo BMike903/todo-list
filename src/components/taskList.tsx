@@ -7,16 +7,15 @@ import Checkbox from "@mui/material/Checkbox";
 
 import "./taskList.css"
 import { Task } from "../lib/types";
-import { useHttp } from "../hooks/useHttp";
-
+import useTaskService from "../services/taskService";
 
 function TaskList(){
 	const [tasks, setTasks] = useState<Array<Task>>([]);
 
-    const {request, loading, error, clearError} = useHttp();
+    const {getTasksByUser, loading, error, clearError} = useTaskService();
     const loadTasks = async () => {
         if(error) clearError();
-		const res = await request();
+		const res = await getTasksByUser(4);
 		setTasks(res);
 	}
 
