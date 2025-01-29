@@ -5,9 +5,8 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 
-import "./taskList.css"
-import { Task } from "../lib/types";
-import useTaskService from "../services/taskService";
+import { Task } from "../../lib/types";
+import useTaskService from "../../services/taskService";
 
 function TaskList(){
 	const [tasks, setTasks] = useState<Array<Task>>([]);
