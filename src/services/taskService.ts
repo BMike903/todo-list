@@ -2,13 +2,19 @@ import { useHttp } from "../hooks/useHttp";
 
 const useTaskService = () => {
     const {request, loading, error, clearError} = useHttp();
+    const baseURL = "https://jsonplaceholder.typicode.com/users/";
 
     const getTasksByUser = async (id: number) => {
-        const response = await request(`https://jsonplaceholder.typicode.com/users/${id}/todos`);
+        const response = await request(`${baseURL}${id}/todos`);
         return response;
     };
 
-    return {loading, error, clearError, getTasksByUser};
+    const getUserById = async (id: number) => {
+        const response = await request(`${baseURL}${id}`);
+        return response;
+    }
+
+    return {loading, error, clearError, getTasksByUser, getUserById};
 }
 
 export default useTaskService;
