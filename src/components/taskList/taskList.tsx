@@ -40,22 +40,22 @@ function TaskList(){
 		}
 		else{
             return (
-                <>
+                <Stack spacing={2}>
                     {tasks.map(item => (
                         <Box key={item.id} sx={{ border: '1px solid' }}>
                             <Checkbox checked={item.completed} onChange={() => changeTaskStatus(item.id)}/>
                             {item.title}
                         </Box>))
                     }
-                </>
+                </Stack>
             )
         }
     }
 
     return(
-        <Stack spacing={2}>
+        <>
             {renderTasks()}
-        </Stack>
+        </>
     )
 }
 
