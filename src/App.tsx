@@ -7,7 +7,7 @@ function App() {
 	return (
 		<>
 			<Header/>
-			<Container>
+			<Container sx={{marginTop: 10}}>
 				<TaskList />
 			</Container>
 		</>
