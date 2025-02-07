@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -36,7 +36,7 @@ function TaskList(){
             ) 
         }
 		if(loading){
-			return <div>Loading</div>
+            return <CircularProgress/>;
 		}
 		else{
             return (
