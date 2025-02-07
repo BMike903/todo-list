@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, CircularProgress, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
+import { Button, CircularProgress, Typography, Stack, Box, Checkbox } from "@mui/material";
 
 import { Task } from "../../lib/types";
 import useTaskService from "../../services/taskService";
