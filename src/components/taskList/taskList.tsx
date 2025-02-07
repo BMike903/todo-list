@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -30,7 +30,9 @@ function TaskList(){
         if(error){
             return(
                 <div>
-                    <div>Error occured while loading tasks</div>
+                    <Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
+                        Error occured while loading tasks
+                    </Typography>
                     <Button variant="contained" onClick={loadTasks}>Try to load again</Button>
                 </div>
             ) 
