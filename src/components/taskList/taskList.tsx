@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button, CircularProgress, Typography, Stack, Box, Checkbox } from "@mui/material";
 
-import { Task } from "../../lib/types";
+import { Task } from "../../types/tasks";
 import useTaskService from "../../services/taskService";
 
 function TaskList(){
