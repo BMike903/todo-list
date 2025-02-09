@@ -10,18 +10,13 @@ import { fetchTasks } from "../../store/action-creators/tasks";
 function TaskList(){
     const {tasks, loading, error} = useTypedSelector(state => state.tasks);
     const dispatch = useDispatch();
-	/* const [tasks, setTasks] = useState<Array<Task>>([]); */
 
-    /* const {getTasksByUser, loading, error, clearError} = useTaskService(); */
-    /* const loadTasks = async () => {
-        if(error) clearError();
-		const res = await getTasksByUser(4);
-		setTasks(res);
-	} */
+    const loadTasks = async (id: number) => {
+        dispatch(fetchTasks(id));
+	}
 
 	useEffect(() => {
-		/* loadTasks(); */
-        dispatch(fetchTasks(4));
+		loadTasks(4);
 	}, []);
 
     const changeTaskStatus = (id: number) => {
@@ -35,7 +30,7 @@ function TaskList(){
                     <Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
                         Error occured while loading tasks
                     </Typography>
-                    {/* <Button variant="contained" onClick={loadTasks}>Try to load again</Button> */}
+                    <Button variant="contained" onClick={() => loadTasks(4)}>Try to load again</Button>
                 </div>
             ) 
         }
