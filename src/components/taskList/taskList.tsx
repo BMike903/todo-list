@@ -21,7 +21,7 @@ function TaskList(){
 
 	useEffect(() => {
 		/* loadTasks(); */
-        dispatch(fetchTasks());
+        dispatch(fetchTasks(4));
 	}, []);
 
     const changeTaskStatus = (id: number) => {

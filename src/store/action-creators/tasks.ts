@@ -1,11 +1,11 @@
 import { Dispatch } from "@reduxjs/toolkit"
 import { TasksAction, TasksActionTypes } from "../../types/tasks"
 
-export const fetchTasks = (): any => {
+export const fetchTasks = (id: number): any => {
     return async (dispatch: Dispatch<TasksAction>) => {
         try{
             dispatch({type: TasksActionTypes.FETCH_TASKS});
-            const response = await fetch("https://jsonplaceholder.typicode.com/users/4/todos");
+            const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}/todos`);
 
             if(!response.ok){
                 throw new Error(`Failed to fetch, status: ${response.status}`);
