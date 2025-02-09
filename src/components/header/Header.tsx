@@ -1,13 +1,36 @@
+import { useEffect } from "react";
+
+import { useDispatch } from "react-redux";
 import { Toolbar, AppBar, Typography} from "@mui/material";
 
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { fetchUser } from "../../store/action-creators/user";
+
 function Header(){
+    const {user, loading, error} = useTypedSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(fetchUser(4));
+    }, [])
+
+    let userName;
+
+    if(loading){
+        userName = "User info is loading";
+    }else if(error){
+        userName = error;
+    }else{
+        userName = user?.name;
+    }
+
     return(
         <AppBar>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Todo list
                 </Typography>
-                <Typography>Username will be here</Typography>
+                <Typography>{userName}</Typography>
             </Toolbar>
         </AppBar>
     )
