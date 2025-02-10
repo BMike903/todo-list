@@ -8,33 +8,39 @@ import { fetchTasks } from "../../store/action-creators/tasks";
 
 
 function TaskList(){
-    const {tasks, loading, error} = useTypedSelector(state => state.tasks);
+    const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
+    const {tasks, loading: tasksLoading, error: tasksError} = useTypedSelector(state => state.tasks);
     const dispatch = useDispatch();
 
-    const loadTasks = async (id: number) => {
-        dispatch(fetchTasks(id));
+    const loadTasks = async () => {
+        if(userLoading){
+            return;
+        }
+        if(!userError && user !== null && (typeof user.id === "number")){
+            dispatch(fetchTasks(user.id));
+        }
 	}
 
 	useEffect(() => {
-		loadTasks(4);
-	}, []);
+		loadTasks();
+	}, [user]);
 
     const changeTaskStatus = (id: number) => {
         console.log(id);
     }
 
     const renderTasks = () => {
-        if(error){
+        if(tasksError){
             return(
                 <div>
                     <Typography variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
                         Error occured while loading tasks
                     </Typography>
-                    <Button variant="contained" onClick={() => loadTasks(4)}>Try to load again</Button>
+                    <Button variant="contained" onClick={loadTasks}>Try to load again</Button>
                 </div>
             ) 
         }
-		if(loading){
+		if(tasksLoading || userLoading){
             return <CircularProgress/>;
 		}
 		else{
