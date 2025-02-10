@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 
-import Header from './components/header/Header';
+import Header from './components/header/header';
 import TaskList from './components/taskList/taskList';
 
 function App() {
