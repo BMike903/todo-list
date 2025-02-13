@@ -4,7 +4,7 @@ import { Button, CircularProgress, Typography, Stack, Box, Checkbox } from "@mui
 import { useDispatch } from "react-redux";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchTasks } from "../../store/action-creators/tasks";
+import { fetchTasks, changeTaskStatus } from "../../store/action-creators/tasks";
 
 
 function TaskList(){
@@ -25,8 +25,8 @@ function TaskList(){
 		loadTasks();
 	}, [user]);
 
-    const changeTaskStatus = (id: number) => {
-        console.log(id);
+    const onTaskStatusClick = (id: number) => {
+        dispatch(changeTaskStatus(id));
     }
 
     const renderTasks = () => {
@@ -48,7 +48,7 @@ function TaskList(){
                 <Stack spacing={2}>
                     {tasks.map(item => (
                         <Box key={item.id} sx={{ border: '1px solid' }}>
-                            <Checkbox checked={item.completed} onChange={() => changeTaskStatus(item.id)}/>
+                            <Checkbox checked={item.completed} onChange={() => onTaskStatusClick(item.id)}/>
                             {item.title}
                         </Box>))
                     }

@@ -21,3 +21,7 @@ export const fetchTasks = (id: number): any => {
         }
     }
 }
+
+export const changeTaskStatus = (id: number): any => {
+    return {type: TasksActionTypes.CHANGE_TASKS_STATUS, payload: id}
+}

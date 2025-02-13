@@ -14,6 +14,19 @@ export const TasksReducer = (state = initialState, action: TasksAction): TasksSt
             return {loading: false, error: null, tasks: action.payload};
         case TasksActionTypes.FETCH_TASKS_ERROR:
             return {loading: false, error: action.payload, tasks: []};
+        case TasksActionTypes.CHANGE_TASKS_STATUS: {
+            const idToChange = action.payload;
+            const newTasks = state.tasks.map((task) => {
+                if(task.id === idToChange) {
+                    return{
+                        ...task,
+                        completed: !task.completed
+                    }
+                }
+                return task;
+            })
+           return {...state, tasks: newTasks}
+        }
         default:
             return state;
     }
