@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 
-import { Button, CircularProgress, Typography, Stack, Box, Checkbox } from "@mui/material";
+import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar } from "@mui/material";
 import { useDispatch } from "react-redux";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchTasks, changeTaskStatus } from "../../store/action-creators/tasks";
+import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError } from "../../store/action-creators/tasks";
 import { Task } from "../../types/tasks";
-
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
@@ -57,10 +56,22 @@ function TaskList(){
             )
         }
     }
-    // TODO: change updatingTaskError to popup instead of div
+
+    const renderUpdatingTaskStatusError = () => {
+        if(updatingTaskError){
+            return(
+                <Snackbar open={true} onClose={() => dispatch(clearUpdateTaskStatusError())} 
+                                message={updatingTaskError} autoHideDuration={3000} />
+            )
+        }
+        else{
+            return null;
+        }
+    }
+
     return(
         <>
-            {updatingTaskError && <div>{updatingTaskError}</div>}
+            {renderUpdatingTaskStatusError()}
             {renderTasks()}
         </>
     )

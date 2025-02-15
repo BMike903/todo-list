@@ -48,3 +48,7 @@ export const changeTaskStatus = (task: Task): any => {
         }
     }
 }
+
+export const clearUpdateTaskStatusError = (): any => {
+    return {type: TasksActionTypes.CLEAR_UPDATING_TASK_ERROR};
+}

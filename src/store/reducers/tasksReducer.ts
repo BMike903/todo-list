@@ -15,6 +15,8 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
             return {loading: false, error: null, tasks: action.payload, updatingTaskError: null};
         case TasksActionTypes.FETCH_TASKS_ERROR:
             return {loading: false, error: action.payload, tasks: [], updatingTaskError: null};
+        case TasksActionTypes.CLEAR_UPDATING_TASK_ERROR:
+            return {...state, updatingTaskError: null}
         case TaskActionTypes.CHANGE_TASK_STATUS: {
             let taskToUpdate = action.payload;
             taskToUpdate = {...taskToUpdate, updating: true}

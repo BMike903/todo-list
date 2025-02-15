@@ -41,6 +41,7 @@ export enum TasksActionTypes{
     FETCH_TASKS = "FETCH_TASKS",
     FETCH_TASKS_SUCCESS = "FETCH_TASKS_SUCCESS",
     FETCH_TASKS_ERROR = "FETCH_TASKS_ERROR",
+    CLEAR_UPDATING_TASK_ERROR = "CLEAR_UPDATING_TASK_ERROR"
 }
 
 interface FetchTasksAction {
@@ -54,6 +55,11 @@ interface FetchTasksErrorAction {
     type: TasksActionTypes.FETCH_TASKS_ERROR,
     payload: string
 }
+interface ClearUpdatingTaskError {
+    type: TasksActionTypes.CLEAR_UPDATING_TASK_ERROR,
+}
+
 export type TasksAction = FetchTasksAction | 
                             FetchTasksSuccessAction | 
-                            FetchTasksErrorAction;
+                            FetchTasksErrorAction | 
+                            ClearUpdatingTaskError;
