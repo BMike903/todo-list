@@ -1,5 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { TasksAction, TasksActionTypes } from "../../types/tasks"
+import { TasksAction, TasksActionTypes, TaskActionTypes, TaskAction, Task } from "../../types/tasks"
 
 export const fetchTasks = (id: number): any => {
     return async (dispatch: Dispatch<TasksAction>) => {
@@ -22,6 +22,29 @@ export const fetchTasks = (id: number): any => {
     }
 }
 
-export const changeTaskStatus = (id: number): any => {
-    return {type: TasksActionTypes.CHANGE_TASKS_STATUS, payload: id}
+export const changeTaskStatus = (task: Task): any => {
+    return async (dispatch: Dispatch<TaskAction>) => {
+        try{
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS, payload: task});
+            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${task.id}`,
+                {
+                    method: "PATCH",
+                    headers:{"Content-Type": "application/json"},
+                    body: JSON.stringify({"completed": !task.completed})
+                } 
+            );
+
+            if(!response.ok){
+                throw new Error(`Failed to update task, status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS, payload: data})
+        }
+        catch{
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_ERROR, 
+                payload: "Error occured while loading tasks"
+            })
+        }
+    }
 }
