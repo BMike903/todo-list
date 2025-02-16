@@ -32,7 +32,7 @@ function TaskList(){
     const renderTasksByCompletion = (completed = true) => {
         const filteredTasks = tasks.filter(task => task.completed === completed);
         if(filteredTasks.length === 0){
-            const message = completed ? "No completed tasks" : "No uncompleted tasks<"
+            const message = completed ? "No completed tasks" : "No uncompleted tasks"
             return <Typography>{message}</Typography>
         }
         return(
@@ -77,10 +77,10 @@ function TaskList(){
             return(
                 <Grid2 container spacing={2}>
                     <Grid2 size={6}>
-                        {renderTasksByCompletion(true)}
+                        {renderTasksByCompletion(false)}
                     </Grid2>
                     <Grid2 size={6}>
-                        {renderTasksByCompletion(false)}
+                        {renderTasksByCompletion(true)}
                     </Grid2>
                 </Grid2>
             )
