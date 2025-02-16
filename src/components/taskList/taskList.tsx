@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
-import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar, Grid2 } from "@mui/material";
+import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar, Grid2, Collapse } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { TransitionGroup } from "react-transition-group";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError } from "../../store/action-creators/tasks";
@@ -37,12 +38,17 @@ function TaskList(){
         }
         return(
             <Stack spacing={2}>
-                {filteredTasks.map(task => (
-                    <Box key={task.id} sx={{ border: '1px solid' }}>
-                        <Checkbox checked={task.completed} disabled={task.updating} onChange={() => onTaskStatusClick(task)}/>
-                        {task.title}
-                    </Box>))
-                }
+                <TransitionGroup>
+                    {filteredTasks.map(task => (
+                        <Collapse key={task.id}>
+                            <Box key={task.id} sx={{ border: '1px solid' }}>
+                                <Checkbox checked={task.completed} disabled={task.updating} 
+                                            onChange={() => onTaskStatusClick(task)}/>
+                                {task.title}
+                            </Box>
+                        </Collapse>))
+                    }
+                </TransitionGroup>
             </Stack>
         )
     }
