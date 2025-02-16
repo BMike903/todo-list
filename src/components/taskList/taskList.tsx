@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar } from "@mui/material";
+import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar, Grid2 } from "@mui/material";
 import { useDispatch } from "react-redux";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -29,6 +29,36 @@ function TaskList(){
         dispatch(changeTaskStatus(task));
     }
 
+    const renderTasksByCompletion = (completed = true) => {
+        const filteredTasks = tasks.filter(task => task.completed === completed);
+        if(filteredTasks.length === 0){
+            const message = completed ? "No completed tasks" : "No uncompleted tasks<"
+            return <Typography>{message}</Typography>
+        }
+        return(
+            <Stack spacing={2}>
+                {filteredTasks.map(task => (
+                    <Box key={task.id} sx={{ border: '1px solid' }}>
+                        <Checkbox checked={task.completed} disabled={task.updating} onChange={() => onTaskStatusClick(task)}/>
+                        {task.title}
+                    </Box>))
+                }
+            </Stack>
+        )
+    }
+
+    const renderUpdatingTaskStatusError = () => {
+        if(updatingTaskError){
+            return(
+                <Snackbar open={true} onClose={() => dispatch(clearUpdateTaskStatusError())} 
+                                message={updatingTaskError} autoHideDuration={3000} />
+            )
+        }
+        else{
+            return null;
+        }
+    }
+
     const renderTasks = () => {
         if(tasksError){
             return(
@@ -44,28 +74,16 @@ function TaskList(){
             return <CircularProgress/>;
 		}
 		else{
-            return (
-                <Stack spacing={2}>
-                    {tasks.map(task => (
-                        <Box key={task.id} sx={{ border: '1px solid' }}>
-                            <Checkbox checked={task.completed} disabled={task.updating} onChange={() => onTaskStatusClick(task)}/>
-                            {task.title}
-                        </Box>))
-                    }
-                </Stack>
-            )
-        }
-    }
-
-    const renderUpdatingTaskStatusError = () => {
-        if(updatingTaskError){
             return(
-                <Snackbar open={true} onClose={() => dispatch(clearUpdateTaskStatusError())} 
-                                message={updatingTaskError} autoHideDuration={3000} />
+                <Grid2 container spacing={2}>
+                    <Grid2 size={6}>
+                        {renderTasksByCompletion(true)}
+                    </Grid2>
+                    <Grid2 size={6}>
+                        {renderTasksByCompletion(false)}
+                    </Grid2>
+                </Grid2>
             )
-        }
-        else{
-            return null;
         }
     }
 
