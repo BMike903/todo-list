@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Button, CircularProgress, Typography, Stack, Box, Checkbox, Snackbar, Grid2, Collapse } from "@mui/material";
+import { Button, Typography, Stack, Box, Checkbox, Snackbar, Grid2, Collapse, Skeleton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
 
@@ -37,19 +37,17 @@ function TaskList(){
             return <Typography>{message}</Typography>
         }
         return(
-            <Stack spacing={2}>
-                <TransitionGroup>
-                    {filteredTasks.map(task => (
-                        <Collapse key={task.id}>
-                            <Box key={task.id} sx={{ border: '1px solid' }}>
-                                <Checkbox checked={task.completed} disabled={task.updating} 
-                                            onChange={() => onTaskStatusClick(task)}/>
-                                {task.title}
-                            </Box>
-                        </Collapse>))
-                    }
-                </TransitionGroup>
-            </Stack>
+            <TransitionGroup>
+                {filteredTasks.map(task => (
+                    <Collapse key={task.id}>
+                        <Box key={task.id} sx={{ border: '1px solid' }}>
+                            <Checkbox checked={task.completed} disabled={task.updating} 
+                                        onChange={() => onTaskStatusClick(task)}/>
+                            {task.title}
+                        </Box>
+                    </Collapse>))
+                }
+            </TransitionGroup>
         )
     }
 
@@ -66,6 +64,14 @@ function TaskList(){
     }
 
     const renderTasks = () => {
+        const renderTasksSkeleton = (count = 8) => {
+            const skeletons = [];
+            for(let i = 0; i < count; i++){
+                skeletons.push(<Skeleton key={i} animation="wave" variant="rectangular" width={500} height={50}/>)
+            }
+            return skeletons;
+        }
+
         if(tasksError){
             return(
                 <div>
@@ -76,17 +82,20 @@ function TaskList(){
                 </div>
             ) 
         }
-		if(tasksLoading || userLoading){
-            return <CircularProgress/>;
-		}
 		else{
             return(
                 <Grid2 container spacing={2}>
                     <Grid2 size={6}>
-                        {renderTasksByCompletion(false)}
+                        <Stack spacing={2}>
+                            {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
+                                renderTasksByCompletion(false)}
+                        </Stack>
                     </Grid2>
                     <Grid2 size={6}>
-                        {renderTasksByCompletion(true)}
+                        <Stack spacing={2}>
+                        {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
+                            renderTasksByCompletion(true)}
+                        </Stack>
                     </Grid2>
                 </Grid2>
             )
