@@ -86,12 +86,14 @@ function TaskList(){
             return(
                 <Grid2 container spacing={2}>
                     <Grid2 size={6}>
+                        <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
                         <Stack spacing={2}>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                                 renderTasksByCompletion(false)}
                         </Stack>
                     </Grid2>
                     <Grid2 size={6}>
+                        <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
                         <Stack spacing={2}>
                         {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                             renderTasksByCompletion(true)}
