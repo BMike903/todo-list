@@ -34,7 +34,7 @@ function TaskList(){
         const filteredTasks = tasks.filter(task => task.completed === completed);
         if(filteredTasks.length === 0){
             const message = completed ? "No completed tasks" : "No uncompleted tasks"
-            return <Typography>{message}</Typography>
+            return <Typography textAlign={"center"} sx={{fontSize: "1.5rem"}}>{message}</Typography>
         }
         return(
             <TransitionGroup>
