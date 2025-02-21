@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 
-import { Button, Typography, Stack, Box, Checkbox, Snackbar, Grid2, Collapse, Skeleton } from "@mui/material";
+import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
+import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError } from "../../store/action-creators/tasks";
@@ -41,8 +42,9 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Box key={task.id} sx={{ border: '1px solid' }} height={50} width={500}>
-                            <Checkbox checked={task.completed} disabled={task.updating} 
-                                        onChange={() => onTaskStatusClick(task)}/>
+                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updating}>
+                                {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
+                            </IconButton>
                             {task.title}
                         </Box>
                     </Collapse>))
