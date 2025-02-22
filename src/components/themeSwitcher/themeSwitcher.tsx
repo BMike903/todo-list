@@ -1,44 +1,38 @@
-import { FormControl, Box, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
-import { useColorScheme } from "@mui/material";
+import { useState } from "react";
 
+import { MenuItem, Menu, IconButton } from "@mui/material";
+import { useColorScheme } from "@mui/material";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 function ThemeSwitcher() {
     const { mode, setMode } = useColorScheme();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    console.log(mode);
+
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = (selectedMode: 'system' | 'light' | 'dark' | null) => {
+        if(selectedMode !== null){
+            setMode(selectedMode as 'system' | 'light' | 'dark');
+        }
+        setAnchorEl(null);
+    };
+
     if (!mode) {
-        return <div>theme is undefined</div>;
+        return null;
     }
 
-    return (
-        <Box
-            sx={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: 'background.default',
-            color: 'text.primary',
-            borderRadius: 1,
-            p: 3,
-            minHeight: '56px',
-            }}
-        >
-        <FormControl>
-            <FormLabel id="demo-theme-toggle">Theme</FormLabel>
-            <RadioGroup
-                aria-labelledby="demo-theme-toggle"
-                name="theme-toggle"
-                row
-                value={mode}
-                onChange={(event) =>
-                setMode(event.target.value as 'system' | 'light' | 'dark')
-                }
-            >
-                <FormControlLabel value="system" control={<Radio />} label="System" />
-                <FormControlLabel value="light" control={<Radio />} label="Light" />
-                <FormControlLabel value="dark" control={<Radio />} label="Dark" />
-            </RadioGroup>
-        </FormControl>
-        </Box>
+    return(
+        <>
+            <IconButton onClick={handleClick} onMouseOver={handleClick}><DarkModeIcon/></IconButton>
+            <Menu anchorEl={anchorEl} open={open} onClose={() =>handleClose(null)} MenuListProps={{onMouseLeave: () => handleClose(null)}}>
+                <MenuItem onClick={() => handleClose("system")}>System</MenuItem>
+                <MenuItem onClick={() => handleClose("light")}>Light</MenuItem>
+                <MenuItem onClick={() => handleClose("dark")}>Dark</MenuItem>
+            </Menu>
+        </>
     );
 }
 
