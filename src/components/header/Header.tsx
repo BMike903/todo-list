@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { Toolbar, AppBar, Typography} from "@mui/material";
+import { Toolbar, AppBar, Typography, Stack} from "@mui/material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { fetchUser } from "../../store/action-creators/user";
+import ThemeSwitcher from "../themeSwitcher/themeSwitcher";
 
 function Header(){
     const {user, loading, error} = useTypedSelector(state => state.user);
@@ -30,7 +31,10 @@ function Header(){
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Todo list
                 </Typography>
-                <Typography>{userName}</Typography>
+                <Stack direction="row">
+                    <Typography>{userName}</Typography>
+                    <ThemeSwitcher/>
+                </Stack>
             </Toolbar>
         </AppBar>
     )
