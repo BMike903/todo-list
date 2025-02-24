@@ -3,15 +3,15 @@ import { useEffect } from "react";
 import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
-import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
+import { CheckBox, CheckBoxOutlineBlank, Delete } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError } from "../../store/action-creators/tasks";
+import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError } from "../../store/action-creators/tasks";
 import { Task } from "../../types/tasks";
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError} = useTypedSelector(state => state.tasks);
+    const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError} = useTypedSelector(state => state.tasks);
     const dispatch = useDispatch();
 
     const loadTasks = async () => {
@@ -42,10 +42,13 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Box sx={{ border: '1px solid', textAlign: "left", display: "flex" }} >
-                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updating}>
+                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updating} disabled={task.deletePending}>
                                 {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                             </IconButton>
                             <Typography>{task.title}</Typography>
+                            <IconButton onClick={() => dispatch(deleteTask(task))} loading={task.deletePending}>
+                                <Delete/>
+                            </IconButton>
                         </Box>
                     </Collapse>))
                 }
@@ -58,6 +61,18 @@ function TaskList(){
             return(
                 <Snackbar open={true} onClose={() => dispatch(clearUpdateTaskStatusError())} 
                                 message={updatingTaskError} autoHideDuration={3000} />
+            )
+        }
+        else{
+            return null;
+        }
+    }
+
+    const renderDeletingTaskError = () => {
+        if(deletingTaskError){
+            return(
+                <Snackbar open={true} onClose={() => dispatch(clearDeletingTaskError())} 
+                                message={deletingTaskError} autoHideDuration={3000} />
             )
         }
         else{
@@ -109,6 +124,7 @@ function TaskList(){
     return(
         <>
             {renderUpdatingTaskStatusError()}
+            {renderDeletingTaskError()}
             {renderTasks()}
         </>
     )

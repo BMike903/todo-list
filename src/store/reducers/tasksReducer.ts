@@ -4,19 +4,22 @@ const initialState: TasksState = {
     tasks: [],
     loading: false,
     error: null,
-    updatingTaskError: null
+    updatingTaskError: null,
+    deletingTaskError: null
 }
 
 export const TasksReducer = (state = initialState, action: TasksAction | TaskAction): TasksState => {
     switch(action.type){
         case TasksActionTypes.FETCH_TASKS:
-            return {loading: true, error: null, tasks: [], updatingTaskError: null};
+            return {...state, loading: true};
         case TasksActionTypes.FETCH_TASKS_SUCCESS:
-            return {loading: false, error: null, tasks: action.payload, updatingTaskError: null};
+            return {...state, loading: false, error: null, tasks: action.payload};
         case TasksActionTypes.FETCH_TASKS_ERROR:
-            return {loading: false, error: action.payload, tasks: [], updatingTaskError: null};
+            return {...state, loading: false, error: action.payload};
         case TasksActionTypes.CLEAR_UPDATING_TASK_ERROR:
             return {...state, updatingTaskError: null}
+        case TasksActionTypes.CLEAR_DELETING_TASK_ERROR:
+            return {...state, deletingTaskError: null}
         case TaskActionTypes.CHANGE_TASK_STATUS: {
             let taskToUpdate = action.payload;
             taskToUpdate = {...taskToUpdate, updating: true}
@@ -38,6 +41,26 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         case TaskActionTypes.CHANGE_TASK_STATUS_ERROR: {
             const newTasks = state.tasks.map((task) => {
                 return {...task, updating: false}
+            })
+            return {...state, tasks: newTasks, updatingTaskError: action.payload};
+        }
+        case TaskActionTypes.DELETE_TASK: {
+            let pendingTask = action.payload;
+            pendingTask = {...pendingTask, deletePending: true}
+            const newTasks = state.tasks.map((task) => {
+                if(task.id !== pendingTask.id) { return task;}
+                return pendingTask;
+            });
+            return {...state, tasks: newTasks}
+        }
+        case TaskActionTypes.DELETE_TASK_SUCCESS: {
+            const deletedTask = action.payload;
+            const newTasks = state.tasks.filter((task) => task.id !== deletedTask.id)
+            return {...state, tasks: newTasks}
+        }
+        case TaskActionTypes.DELETE_TASK_ERROR: {
+            const newTasks = state.tasks.map((task) => {
+                return {...task, updating: false, deletePending: false}
             })
             return {...state, tasks: newTasks, updatingTaskError: action.payload};
         }

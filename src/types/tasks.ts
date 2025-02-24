@@ -3,13 +3,17 @@ export type Task = {
 	id: number,
 	title: string,
 	completed: boolean,
-    updating: boolean
+    updating: boolean,
+    deletePending: boolean
 };
 
 export enum TaskActionTypes{
     CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS",
     CHANGE_TASK_STATUS_SUCCESS = "CHANGE_TASK_STATUS_SUCCESS",
     CHANGE_TASK_STATUS_ERROR = "CHANGE_TASK_STATUS_ERROR",
+    DELETE_TASK = "DELETE_TASK",
+    DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS",
+    DELETE_TASK_ERROR = "DELETE_TASK_ERROR",
 }
 
 interface ChangeTaskStatusAction {
@@ -25,23 +29,41 @@ interface ChangeTaskStatusErrorAction {
     payload: string
 }
 
+interface DeleteTaskAction {
+    type: TaskActionTypes.DELETE_TASK
+    payload: Task
+}
+interface DeleteTaskSuccessAction {
+    type: TaskActionTypes.DELETE_TASK_SUCCESS
+    payload: Task
+}
+interface DeleteTaskErrorAction {
+    type: TaskActionTypes.DELETE_TASK_ERROR
+    payload: string
+}
+
 export type TaskAction = ChangeTaskStatusAction | 
                             ChangeTaskStatusSuccessAction | 
-                            ChangeTaskStatusErrorAction;
+                            ChangeTaskStatusErrorAction |
+                            DeleteTaskAction |
+                            DeleteTaskSuccessAction |
+                            DeleteTaskErrorAction;
 
 
 export type TasksState = {
     tasks: Task[] | [],
     loading: boolean,
     error: string | null,
-    updatingTaskError: string | null
+    updatingTaskError: string | null,
+    deletingTaskError: string | null,
 };
 
 export enum TasksActionTypes{
     FETCH_TASKS = "FETCH_TASKS",
     FETCH_TASKS_SUCCESS = "FETCH_TASKS_SUCCESS",
     FETCH_TASKS_ERROR = "FETCH_TASKS_ERROR",
-    CLEAR_UPDATING_TASK_ERROR = "CLEAR_UPDATING_TASK_ERROR"
+    CLEAR_UPDATING_TASK_ERROR = "CLEAR_UPDATING_TASK_ERROR",
+    CLEAR_DELETING_TASK_ERROR = "CLEAR_DELETING_TASK_ERROR"
 }
 
 interface FetchTasksAction {
@@ -58,8 +80,12 @@ interface FetchTasksErrorAction {
 interface ClearUpdatingTaskError {
     type: TasksActionTypes.CLEAR_UPDATING_TASK_ERROR,
 }
+interface ClearDeletingTaskError {
+    type: TasksActionTypes.CLEAR_DELETING_TASK_ERROR,
+}
 
 export type TasksAction = FetchTasksAction | 
                             FetchTasksSuccessAction | 
                             FetchTasksErrorAction | 
-                            ClearUpdatingTaskError;
+                            ClearUpdatingTaskError |
+                            ClearDeletingTaskError;
