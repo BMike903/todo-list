@@ -27,10 +27,6 @@ function TaskList(){
 		loadTasks();
 	}, [user]);
 
-    const onTaskStatusClick = (task: Task) => {
-        dispatch(changeTaskStatus(task));
-    }
-
     const renderTasksByCompletion = (completed = true) => {
         const filteredTasks = tasks.filter(task => task.completed === completed);
         if(filteredTasks.length === 0){
@@ -42,7 +38,7 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Box sx={{ border: '1px solid', textAlign: "left", display: "flex" }} >
-                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updatingPending} disabled={task.deletingPending}>
+                            <IconButton onClick={() => dispatch(changeTaskStatus(task))} loading={task.updatingPending} disabled={task.deletingPending}>
                                 {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                             </IconButton>
                             <Typography>{task.title}</Typography>
