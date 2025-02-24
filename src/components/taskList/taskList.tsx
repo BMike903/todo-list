@@ -36,13 +36,15 @@ function TaskList(){
             <TransitionGroup>
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
-                        <Box sx={{ border: '1px solid', textAlign: "left", display: "flex" }} >
-                            <IconButton onClick={() => dispatch(changeTaskStatus(task))} loading={task.updatingPending} disabled={task.deletingPending}>
-                                {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
-                            </IconButton>
-                            <Typography>{task.title}</Typography>
+                        <Box sx={{border: '1px solid', display: "flex", justifyContent: "space-between"}}>
+                            <Box sx={{ textAlign: "left", display: "flex" }} >
+                                <IconButton onClick={() => dispatch(changeTaskStatus(task))} loading={task.updatingPending} disabled={task.deletingPending}>
+                                    {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
+                                </IconButton>
+                                <Typography>{task.title}</Typography>
+                            </Box>
                             <IconButton onClick={() => dispatch(deleteTask(task))} loading={task.deletingPending}>
-                                <Delete/>
+                                    <Delete/>
                             </IconButton>
                         </Box>
                     </Collapse>))
