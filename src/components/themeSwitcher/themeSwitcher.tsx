@@ -7,7 +7,6 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 function ThemeSwitcher() {
     const { mode, setMode } = useColorScheme();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    console.log(mode);
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
