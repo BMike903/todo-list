@@ -41,11 +41,11 @@ function TaskList(){
             <TransitionGroup>
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
-                        <Box key={task.id} sx={{ border: '1px solid' }} height={50} width={500}>
+                        <Box sx={{ border: '1px solid', textAlign: "left", display: "flex" }} >
                             <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updating}>
                                 {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                             </IconButton>
-                            {task.title}
+                            <Typography>{task.title}</Typography>
                         </Box>
                     </Collapse>))
                 }
