@@ -7,7 +7,6 @@ import { CheckBox, CheckBoxOutlineBlank, Delete } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError } from "../../store/action-creators/tasks";
-import { Task } from "../../types/tasks";
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
