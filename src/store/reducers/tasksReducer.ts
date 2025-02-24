@@ -22,7 +22,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
             return {...state, deletingTaskError: null}
         case TaskActionTypes.CHANGE_TASK_STATUS: {
             let taskToUpdate = action.payload;
-            taskToUpdate = {...taskToUpdate, updating: true}
+            taskToUpdate = {...taskToUpdate, updatingPending: true}
             const newTasks = state.tasks.map((task) => {
                 if(task.id !== taskToUpdate.id) { return task;}
                 return taskToUpdate;
@@ -31,7 +31,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         }
         case TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS: {
             let newTask = action.payload;
-            newTask = {...newTask, updating: false}
+            newTask = {...newTask, updatingPending: false}
             const newTasks = state.tasks.map((task) => {
                 if(task.id !== newTask.id) { return task;}
                 return newTask;
@@ -46,7 +46,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         }
         case TaskActionTypes.DELETE_TASK: {
             let pendingTask = action.payload;
-            pendingTask = {...pendingTask, deletePending: true}
+            pendingTask = {...pendingTask, deletingPending: true}
             const newTasks = state.tasks.map((task) => {
                 if(task.id !== pendingTask.id) { return task;}
                 return pendingTask;
@@ -60,7 +60,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         }
         case TaskActionTypes.DELETE_TASK_ERROR: {
             const newTasks = state.tasks.map((task) => {
-                return {...task, updating: false, deletePending: false}
+                return {...task, updatingPending: false, deletingPending: false}
             })
             return {...state, tasks: newTasks, updatingTaskError: action.payload};
         }

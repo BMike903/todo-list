@@ -42,11 +42,11 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Box sx={{ border: '1px solid', textAlign: "left", display: "flex" }} >
-                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updating} disabled={task.deletePending}>
+                            <IconButton onClick={() => onTaskStatusClick(task)} loading={task.updatingPending} disabled={task.deletingPending}>
                                 {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                             </IconButton>
                             <Typography>{task.title}</Typography>
-                            <IconButton onClick={() => dispatch(deleteTask(task))} loading={task.deletePending}>
+                            <IconButton onClick={() => dispatch(deleteTask(task))} loading={task.deletingPending}>
                                 <Delete/>
                             </IconButton>
                         </Box>

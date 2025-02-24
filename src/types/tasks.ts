@@ -3,8 +3,8 @@ export type Task = {
 	id: number,
 	title: string,
 	completed: boolean,
-    updating: boolean,
-    deletePending: boolean
+    updatingPending: boolean,
+    deletingPending: boolean
 };
 
 export enum TaskActionTypes{
