@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
 import { Toolbar, AppBar, Typography, Stack} from "@mui/material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchUser } from "../../store/action-creators/user";
 import ThemeSwitcher from "../themeSwitcher/themeSwitcher";
+import { useActions } from "../../hooks/useActions";
 
 function Header(){
     const {user, loading, error} = useTypedSelector(state => state.user);
-    const dispatch = useDispatch();
+    const {fetchUser} = useActions();
 
     useEffect(()=>{
-        dispatch(fetchUser(4));
+        fetchUser(4);
     }, [])
 
     let userName;
