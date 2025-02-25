@@ -1,24 +1,23 @@
 import { useEffect } from "react";
 
 import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
 import { CheckBox, CheckBoxOutlineBlank, Delete } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError } from "../../store/action-creators/tasks";
+import { useTasksActions } from "../../hooks/useActions";
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError} = useTypedSelector(state => state.tasks);
-    const dispatch = useDispatch();
+    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError} = useTasksActions();
 
     const loadTasks = async () => {
         if(userLoading){
             return;
         }
         if(!userError && user !== null && (typeof user.id === "number")){
-            dispatch(fetchTasks(user.id));
+            fetchTasks(user.id);
         }
 	}
 
@@ -39,14 +38,14 @@ function TaskList(){
                         <Card sx={{margin: "5px"}}>
                             <Box sx={{ display: "flex", justifyContent: "space-between"}}>
                                 <Box sx={{ textAlign: "left", display: "flex" }} >
-                                    <IconButton onClick={() => dispatch(changeTaskStatus(task))} 
+                                    <IconButton onClick={() => changeTaskStatus(task)} 
                                             loading={task.updatingPending} disabled={task.deletingPending}
                                             color="primary">
                                         {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                                     </IconButton>
                                     <Typography>{task.title}</Typography>
                                 </Box>
-                                <IconButton onClick={() => dispatch(deleteTask(task))} 
+                                <IconButton onClick={() => deleteTask(task)} 
                                             loading={task.deletingPending} color="secondary">
                                         <Delete/>
                                 </IconButton>
@@ -61,7 +60,7 @@ function TaskList(){
     const renderUpdatingTaskStatusError = () => {
         if(updatingTaskError){
             return(
-                <Snackbar open={true} onClose={() => dispatch(clearUpdateTaskStatusError())} 
+                <Snackbar open={true} onClose={() => clearUpdateTaskStatusError()} 
                                 message={updatingTaskError} autoHideDuration={3000} />
             )
         }
@@ -73,7 +72,7 @@ function TaskList(){
     const renderDeletingTaskError = () => {
         if(deletingTaskError){
             return(
-                <Snackbar open={true} onClose={() => dispatch(clearDeletingTaskError())} 
+                <Snackbar open={true} onClose={() => clearDeletingTaskError()} 
                                 message={deletingTaskError} autoHideDuration={3000} />
             )
         }
