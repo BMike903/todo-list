@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton } from "@mui/material";
+import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
 import { CheckBox, CheckBoxOutlineBlank, Delete } from "@mui/icons-material";
@@ -36,20 +36,22 @@ function TaskList(){
             <TransitionGroup>
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
-                        <Box sx={{border: '1px solid', display: "flex", justifyContent: "space-between"}}>
-                            <Box sx={{ textAlign: "left", display: "flex" }} >
-                                <IconButton onClick={() => dispatch(changeTaskStatus(task))} 
-                                        loading={task.updatingPending} disabled={task.deletingPending}
-                                        color="primary">
-                                    {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
+                        <Card sx={{margin: "5px"}}>
+                            <Box sx={{ display: "flex", justifyContent: "space-between"}}>
+                                <Box sx={{ textAlign: "left", display: "flex" }} >
+                                    <IconButton onClick={() => dispatch(changeTaskStatus(task))} 
+                                            loading={task.updatingPending} disabled={task.deletingPending}
+                                            color="primary">
+                                        {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
+                                    </IconButton>
+                                    <Typography>{task.title}</Typography>
+                                </Box>
+                                <IconButton onClick={() => dispatch(deleteTask(task))} 
+                                            loading={task.deletingPending} color="secondary">
+                                        <Delete/>
                                 </IconButton>
-                                <Typography>{task.title}</Typography>
                             </Box>
-                            <IconButton onClick={() => dispatch(deleteTask(task))} 
-                                        loading={task.deletingPending} color="secondary">
-                                    <Delete/>
-                            </IconButton>
-                        </Box>
+                        </Card>
                     </Collapse>))
                 }
             </TransitionGroup>
@@ -104,7 +106,7 @@ function TaskList(){
                 <Grid2 container spacing={1}>
                     <Grid2 sx={{width: "550px"}}>
                         <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
-                        <Stack spacing={2}>
+                        <Stack>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                                 renderTasksByCompletion(false)}
                         </Stack>
