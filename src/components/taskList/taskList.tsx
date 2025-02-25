@@ -38,12 +38,15 @@ function TaskList(){
                     <Collapse key={task.id}>
                         <Box sx={{border: '1px solid', display: "flex", justifyContent: "space-between"}}>
                             <Box sx={{ textAlign: "left", display: "flex" }} >
-                                <IconButton onClick={() => dispatch(changeTaskStatus(task))} loading={task.updatingPending} disabled={task.deletingPending}>
+                                <IconButton onClick={() => dispatch(changeTaskStatus(task))} 
+                                        loading={task.updatingPending} disabled={task.deletingPending}
+                                        color="primary">
                                     {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                                 </IconButton>
                                 <Typography>{task.title}</Typography>
                             </Box>
-                            <IconButton onClick={() => dispatch(deleteTask(task))} loading={task.deletingPending}>
+                            <IconButton onClick={() => dispatch(deleteTask(task))} 
+                                        loading={task.deletingPending} color="secondary">
                                     <Delete/>
                             </IconButton>
                         </Box>

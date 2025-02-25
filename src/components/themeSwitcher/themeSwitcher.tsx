@@ -25,7 +25,7 @@ function ThemeSwitcher() {
 
     return(
         <>
-            <IconButton onClick={handleClick} onMouseOver={handleClick}><DarkModeIcon/></IconButton>
+            <IconButton onClick={handleClick} onMouseOver={handleClick} color="secondary"><DarkModeIcon/></IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={() =>handleClose(null)} MenuListProps={{onMouseLeave: () => handleClose(null)}}>
                 <MenuItem onClick={() => handleClose("system")}>System</MenuItem>
                 <MenuItem onClick={() => handleClose("light")}>Light</MenuItem>
