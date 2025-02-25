@@ -4,11 +4,11 @@ import { Toolbar, AppBar, Typography, Stack} from "@mui/material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import ThemeSwitcher from "../themeSwitcher/themeSwitcher";
-import { useActions } from "../../hooks/useActions";
+import { useUserActions } from "../../hooks/useActions";
 
 function Header(){
     const {user, loading, error} = useTypedSelector(state => state.user);
-    const {fetchUser} = useActions();
+    const {fetchUser} = useUserActions();
 
     useEffect(()=>{
         fetchUser(4);
