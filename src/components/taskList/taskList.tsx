@@ -43,7 +43,7 @@ function TaskList(){
                                             color="primary">
                                         {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                                     </IconButton>
-                                    <Typography>{task.title}</Typography>
+                                    <Typography sx={{paddingTop: "5px"}}>{task.title}</Typography>
                                 </Box>
                                 <IconButton onClick={() => deleteTask(task)} 
                                             loading={task.deletingPending} color="secondary">
