@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import { CheckBox, CheckBoxOutlineBlank, Delete } from "@mui/icons-material";
+import { CheckBox, CheckBoxOutlineBlank, Delete, Edit } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
@@ -45,10 +45,16 @@ function TaskList(){
                                     </IconButton>
                                     <Typography sx={{paddingTop: "5px"}}>{task.title}</Typography>
                                 </Box>
-                                <IconButton onClick={() => deleteTask(task)} 
-                                            loading={task.deletingPending} color="secondary">
-                                        <Delete/>
-                                </IconButton>
+                                <Stack direction="row">
+                                    <IconButton color="secondary"
+                                            disabled={task.deletingPending || task.updatingPending}>
+                                        <Edit/>
+                                    </IconButton>
+                                    <IconButton onClick={() => deleteTask(task)} 
+                                                loading={task.deletingPending} color="secondary">
+                                            <Delete/>
+                                    </IconButton>
+                                </Stack>
                             </Box>
                         </Card>
                     </Collapse>))
