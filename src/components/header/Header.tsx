@@ -30,7 +30,7 @@ function Header(){
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Todo list
                 </Typography>
-                <Stack direction="row" sx={{"align-items": "center"}}>
+                <Stack direction="row" sx={{"alignItems": "center"}}>
                     <Typography>{userName}</Typography>
                     <ThemeSwitcher/>
                 </Stack>
