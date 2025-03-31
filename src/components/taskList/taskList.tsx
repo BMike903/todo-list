@@ -1,16 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card } from "@mui/material";
+import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import { CheckBox, CheckBoxOutlineBlank, Delete, Edit } from "@mui/icons-material";
+import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
+
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError} = useTypedSelector(state => state.tasks);
     const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError} = useTasksActions();
+
+    const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
+    const [editedTaskTitle, setEditedTaskTitle] = useState("");
+    const isTaskEdited = (taskId: number) => editedTaskId !== taskId;
+
+    const onEditClick = (id: number, title: string) => {
+        setEditedTaskId(id);
+        setEditedTaskTitle(title);
+    }
+
+    const handleUndoEditTask = () => {
+        setEditedTaskId(null);
+        setEditedTaskTitle("");
+    }
+
+    const handleEditTask = () => {
+        console.log("ID - ",editedTaskId, " new title - ", editedTaskTitle);
+        setEditedTaskId(null);
+        setEditedTaskTitle("");
+    }
 
     const loadTasks = async () => {
         if(userLoading){
@@ -39,21 +60,38 @@ function TaskList(){
                             <Box sx={{ display: "flex", justifyContent: "space-between"}}>
                                 <Box sx={{ textAlign: "left", display: "flex" }} >
                                     <IconButton onClick={() => changeTaskStatus(task)} 
-                                            loading={task.updatingPending} disabled={task.deletingPending}
-                                            color="primary">
+                                            loading={task.updatingPending} color="primary"
+                                            disabled={task.deletingPending || !isTaskEdited(task.id)}>
                                         {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                                     </IconButton>
-                                    <Typography sx={{paddingTop: "5px"}}>{task.title}</Typography>
+                                    <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
+                                            onChange={e => setEditedTaskTitle(e.target.value)} 
+                                            disableUnderline 
+                                            disabled={isTaskEdited(task.id) ? true : false}>
+                                    </Input>
                                 </Box>
                                 <Stack direction="row">
-                                    <IconButton color="secondary"
-                                            disabled={task.deletingPending || task.updatingPending}>
-                                        <Edit/>
-                                    </IconButton>
-                                    <IconButton onClick={() => deleteTask(task)} 
-                                                loading={task.deletingPending} color="secondary">
+                                    {editedTaskId === null
+                                    ? 
+                                    <>
+                                        <IconButton color="secondary" onClick={() => onEditClick(task.id, task.title)}
+                                                disabled={task.deletingPending || task.updatingPending}>
+                                            <Edit/>
+                                        </IconButton>
+                                        <IconButton onClick={() => deleteTask(task)} 
+                                                    loading={task.deletingPending} color="secondary">
                                             <Delete/>
-                                    </IconButton>
+                                        </IconButton>
+                                    </>
+                                    :
+                                    <>
+                                        <IconButton color="secondary" onClick={() => handleEditTask()}>
+                                            <Done/>   
+                                        </IconButton>
+                                        <IconButton color="secondary" onClick={() => handleUndoEditTask()}>
+                                            <Undo/>   
+                                        </IconButton>
+                                    </>}
                                 </Stack>
                             </Box>
                         </Card>
