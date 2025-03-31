@@ -7,6 +7,11 @@ export type Task = {
     deletingPending: boolean
 };
 
+export type TaskTitleUpdate = {
+    id: number,
+    newTitle: string
+};
+
 export enum TaskActionTypes{
     CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS",
     CHANGE_TASK_STATUS_SUCCESS = "CHANGE_TASK_STATUS_SUCCESS",
@@ -14,6 +19,9 @@ export enum TaskActionTypes{
     DELETE_TASK = "DELETE_TASK",
     DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS",
     DELETE_TASK_ERROR = "DELETE_TASK_ERROR",
+    CHANGE_TASK_TITLE = "CHANGE_TASK_TITLE",
+    CHANGE_TASK_TITLE_SUCESS = "CHANGE_TASK_TITLE_SUCESS",
+    CHANGE_TASK_TITLE_ERROR = "CHANGE_TASK_TITLE_ERROR",
 }
 
 interface ChangeTaskStatusAction {
@@ -42,12 +50,28 @@ interface DeleteTaskErrorAction {
     payload: string
 }
 
-export type TaskAction = ChangeTaskStatusAction | 
-                            ChangeTaskStatusSuccessAction | 
+interface ChangeTaskTitleAction {
+    type: TaskActionTypes.CHANGE_TASK_TITLE,
+    payload: TaskTitleUpdate
+}
+interface ChangeTaskTitleSuccessAction {
+    type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS,
+    payload: Task
+}
+interface ChangeTaskTitleErrorAction {
+    type: TaskActionTypes.CHANGE_TASK_TITLE_ERROR,
+    payload: string
+}
+
+export type TaskAction = ChangeTaskStatusAction |
+                            ChangeTaskStatusSuccessAction |
                             ChangeTaskStatusErrorAction |
                             DeleteTaskAction |
                             DeleteTaskSuccessAction |
-                            DeleteTaskErrorAction;
+                            DeleteTaskErrorAction |
+                            ChangeTaskTitleAction |
+                            ChangeTaskTitleSuccessAction |
+                            ChangeTaskTitleErrorAction;
 
 
 export type TasksState = {
@@ -55,6 +79,7 @@ export type TasksState = {
     loading: boolean,
     error: string | null,
     updatingTaskError: string | null,
+    updatingTaskTitleError: string | null,
     deletingTaskError: string | null,
 };
 
@@ -63,7 +88,8 @@ export enum TasksActionTypes{
     FETCH_TASKS_SUCCESS = "FETCH_TASKS_SUCCESS",
     FETCH_TASKS_ERROR = "FETCH_TASKS_ERROR",
     CLEAR_UPDATING_TASK_ERROR = "CLEAR_UPDATING_TASK_ERROR",
-    CLEAR_DELETING_TASK_ERROR = "CLEAR_DELETING_TASK_ERROR"
+    CLEAR_DELETING_TASK_ERROR = "CLEAR_DELETING_TASK_ERROR",
+    CLEAR_UPDATING_TASK_TITLE_ERROR = "CLEAR_UPDATING_TASK_TITLE_ERROR"
 }
 
 interface FetchTasksAction {
@@ -83,9 +109,13 @@ interface ClearUpdatingTaskError {
 interface ClearDeletingTaskError {
     type: TasksActionTypes.CLEAR_DELETING_TASK_ERROR,
 }
+interface ClearUpdatingTaskTitleError {
+    type: TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR,
+}
 
-export type TasksAction = FetchTasksAction | 
-                            FetchTasksSuccessAction | 
-                            FetchTasksErrorAction | 
+export type TasksAction = FetchTasksAction |
+                            FetchTasksSuccessAction |
+                            FetchTasksErrorAction |
                             ClearUpdatingTaskError |
-                            ClearDeletingTaskError;
+                            ClearDeletingTaskError |
+                            ClearUpdatingTaskTitleError;

@@ -11,7 +11,7 @@ import { useTasksActions } from "../../hooks/useActions";
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError} = useTasksActions();
+    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle} = useTasksActions();
 
     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
@@ -29,6 +29,7 @@ function TaskList(){
 
     const handleEditTask = () => {
         console.log("ID - ",editedTaskId, " new title - ", editedTaskTitle);
+        changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
         setEditedTaskId(null);
         setEditedTaskTitle("");
     }

@@ -5,7 +5,8 @@ const initialState: TasksState = {
     loading: false,
     error: null,
     updatingTaskError: null,
-    deletingTaskError: null
+    deletingTaskError: null,
+    updatingTaskTitleError: null
 }
 
 export const TasksReducer = (state = initialState, action: TasksAction | TaskAction): TasksState => {
@@ -63,6 +64,25 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
                 return {...task, updatingPending: false, deletingPending: false}
             })
             return {...state, tasks: newTasks, updatingTaskError: action.payload};
+        }
+        case TaskActionTypes.CHANGE_TASK_TITLE: {
+            const taskUpdate = action.payload;
+            let taskToUpdate = state.tasks.filter(task => task.id === taskUpdate.id)[0];
+            taskToUpdate = {...taskToUpdate, updatingPending: true, title: taskUpdate.newTitle}
+            const newTasks = state.tasks.map((task) => {
+                if(task.id !== taskToUpdate.id) { return task;}
+                return taskToUpdate;
+            });
+           return {...state, tasks: newTasks};
+        }
+        case TaskActionTypes.CHANGE_TASK_TITLE_SUCESS: {
+            let newTask = action.payload;
+            newTask = {...newTask, updatingPending: false}
+            const newTasks = state.tasks.map((task) => {
+                if(task.id !== newTask.id) { return task;}
+                return newTask;
+            });
+            return {...state, tasks: newTasks}
         }
         default:
             return state;
