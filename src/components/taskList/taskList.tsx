@@ -71,7 +71,7 @@ function TaskList(){
                                     </Input>
                                 </Box>
                                 <Stack direction="row">
-                                    {editedTaskId === null
+                                    {editedTaskId !== task.id
                                     ? 
                                     <>
                                         <IconButton color="secondary" onClick={() => onEditClick(task.id, task.title)}
