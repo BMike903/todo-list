@@ -59,8 +59,8 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Card sx={{margin: "5px"}}>
-                            <Box sx={{ display: "flex", justifyContent: "space-between"}}>
-                                <Box sx={{ textAlign: "left", display: "flex" }} >
+                            <Stack  direction="row" sx={{ justifyContent: "space-between"}}>
+                                <Stack direction="row" >
                                     <IconButton onClick={() => changeTaskStatus(task)} 
                                             loading={task.updatingPending} color="primary"
                                             disabled={task.deletingPending || !isTaskEdited(task.id)}>
@@ -68,10 +68,10 @@ function TaskList(){
                                     </IconButton>
                                     <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
                                             onChange={e => setEditedTaskTitle(e.target.value)} 
-                                            disableUnderline 
+                                            disableUnderline
                                             disabled={isTaskEdited(task.id) ? true : false}>
                                     </Input>
-                                </Box>
+                                </Stack>
                                 <Stack direction="row">
                                     {editedTaskId !== task.id
                                     ? 
@@ -95,7 +95,7 @@ function TaskList(){
                                         </IconButton>
                                     </>}
                                 </Stack>
-                            </Box>
+                            </Stack>
                         </Card>
                     </Collapse>))
                 }
