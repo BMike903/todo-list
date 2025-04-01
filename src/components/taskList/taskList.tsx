@@ -16,6 +16,7 @@ function TaskList(){
     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
     const isTaskEdited = (taskId: number) => editedTaskId !== taskId;
+    const clearEditedTask = () => {setEditedTaskId(null); setEditedTaskTitle("")};
 
     const onEditClick = (id: number, title: string) => {
         setEditedTaskId(id);
@@ -23,15 +24,12 @@ function TaskList(){
     }
 
     const handleUndoEditTask = () => {
-        setEditedTaskId(null);
-        setEditedTaskTitle("");
+        clearEditedTask();
     }
 
     const handleEditTask = () => {
-        console.log("ID - ",editedTaskId, " new title - ", editedTaskTitle);
         changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
-        setEditedTaskId(null);
-        setEditedTaskTitle("");
+        clearEditedTask();
     }
 
     const loadTasks = async () => {
