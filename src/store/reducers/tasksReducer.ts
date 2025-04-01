@@ -31,10 +31,11 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
            return {...state, tasks: newTasks};
         }
         case TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS: {
-            let newTask = action.payload;
-            newTask = {...newTask, updatingPending: false}
+            const updatedTask = action.payload;
+            const oldTask = state.tasks.filter(task => task.id === updatedTask.id)[0];
+            const newTask = {...oldTask, updatingPending: false, completed: updatedTask.completed};
             const newTasks = state.tasks.map((task) => {
-                if(task.id !== newTask.id) { return task;}
+                if(task.id !== oldTask.id) { return task;}
                 return newTask;
             });
             return {...state, tasks: newTasks}
