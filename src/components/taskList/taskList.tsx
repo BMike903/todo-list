@@ -28,7 +28,10 @@ function TaskList(){
     }
 
     const handleEditTask = () => {
-        changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
+        const oldTitle = tasks.filter(task => task.id === editedTaskId)[0].title;
+        if(editedTaskTitle !== oldTitle){
+            changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
+        }
         clearEditedTask();
     }
 
