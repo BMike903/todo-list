@@ -68,7 +68,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         case TaskActionTypes.CHANGE_TASK_TITLE: {
             const taskUpdate = action.payload;
             let taskToUpdate = state.tasks.filter(task => task.id === taskUpdate.id)[0];
-            taskToUpdate = {...taskToUpdate, updatingPending: true, title: taskUpdate.newTitle}
+            taskToUpdate = {...taskToUpdate, updatingPending: true}
             const newTasks = state.tasks.map((task) => {
                 if(task.id !== taskToUpdate.id) { return task;}
                 return taskToUpdate;
@@ -77,9 +77,10 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         }
         case TaskActionTypes.CHANGE_TASK_TITLE_SUCESS: {
             let newTask = action.payload;
-            newTask = {...newTask, updatingPending: false}
+            const oldTask = state.tasks.filter(task => task.id === newTask.id)[0];
+            newTask = {...oldTask, updatingPending: false, title: newTask.title};
             const newTasks = state.tasks.map((task) => {
-                if(task.id !== newTask.id) { return task;}
+                if(task.id !== oldTask.id) { return task;}
                 return newTask;
             });
             return {...state, tasks: newTasks}
