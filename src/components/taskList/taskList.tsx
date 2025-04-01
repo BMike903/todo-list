@@ -160,15 +160,15 @@ function TaskList(){
         }
 		else{
             return(
-                <Grid2 container spacing={1} sx={{flexDirection: {lg: "row", md: "column", sm: "column"}}}>
-                    <Grid2 sx={{width: "550px"}}>
+                <Grid2 container spacing={1} sx={{flexDirection: {lg: "row", md: "column", sm: "column"}, width: {lg: "100%", md: "100%"}}}>
+                    <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
                         <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
                         <Stack>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                                 renderTasksByCompletion(false)}
                         </Stack>
                     </Grid2>
-                    <Grid2 sx={{width: "550px"}}>
+                    <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
                         <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
                         <Stack spacing={2}>
                         {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
