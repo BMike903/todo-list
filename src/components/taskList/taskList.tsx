@@ -79,7 +79,7 @@ function TaskList(){
                                                 disabled={task.deletingPending || task.updatingPending}>
                                             <Edit/>
                                         </IconButton>
-                                        <IconButton onClick={() => deleteTask(task)} 
+                                        <IconButton onClick={() => deleteTask(task)} disabled={task.updatingPending}
                                                     loading={task.deletingPending} color="secondary">
                                             <Delete/>
                                         </IconButton>
