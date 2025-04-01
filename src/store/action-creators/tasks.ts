@@ -97,8 +97,14 @@ export const changeTaskTitle = (taskUpdate: TaskTitleUpdate): any => {
             const data = await response.json();
             dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS, payload: data})
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_ERROR, 
+                payload: "Error occured while updating task"
+            })
         }
     }
+}
+
+export const clearUpdateTaskTitleError = () => {
+    return {type: TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR};
 }

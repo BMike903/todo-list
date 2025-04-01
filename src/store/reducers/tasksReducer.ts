@@ -21,6 +21,8 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
             return {...state, updatingTaskError: null}
         case TasksActionTypes.CLEAR_DELETING_TASK_ERROR:
             return {...state, deletingTaskError: null}
+        case TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR:
+            return {...state, updatingTaskTitleError: null}
         case TaskActionTypes.CHANGE_TASK_STATUS: {
             let taskToUpdate = action.payload;
             taskToUpdate = {...taskToUpdate, updatingPending: true}
@@ -85,6 +87,12 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
                 return newTask;
             });
             return {...state, tasks: newTasks}
+        }
+        case TaskActionTypes.CHANGE_TASK_TITLE_ERROR: {
+            const newTasks = state.tasks.map((task) => {
+                return {...task, updatingPending: false}
+            })
+            return {...state, tasks: newTasks, updatingTaskError: action.payload};
         }
         default:
             return state;

@@ -10,8 +10,8 @@ import { useTasksActions } from "../../hooks/useActions";
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle} = useTasksActions();
+    const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError, updatingTaskTitleError} = useTypedSelector(state => state.tasks);
+    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError} = useTasksActions();
 
     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
@@ -115,6 +115,18 @@ function TaskList(){
         }
     }
 
+    const renderUpdatingTaskTitleError = () => {
+        if(updatingTaskTitleError){
+            return(
+                <Snackbar open={true} onClose={() => clearUpdateTaskTitleError()} 
+                                message={updatingTaskTitleError} autoHideDuration={3000} />
+            )
+        }
+        else{
+            return null;
+        }
+    }
+
     const renderDeletingTaskError = () => {
         if(deletingTaskError){
             return(
@@ -171,6 +183,7 @@ function TaskList(){
     return(
         <>
             {renderUpdatingTaskStatusError()}
+            {renderUpdatingTaskTitleError()}
             {renderDeletingTaskError()}
             {renderTasks()}
         </>
