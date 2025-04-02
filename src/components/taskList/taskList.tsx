@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { Button, Typography, Stack, Box, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
@@ -17,10 +17,12 @@ function TaskList(){
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
     const isTaskEdited = (taskId: number) => editedTaskId !== taskId;
     const clearEditedTask = () => {setEditedTaskId(null); setEditedTaskTitle("")};
+    const inputRefs = useRef<HTMLInputElement[]>([]);
 
     const onEditClick = (id: number, title: string) => {
         setEditedTaskId(id);
         setEditedTaskTitle(title);
+        setTimeout(function() {inputRefs.current[id].focus()}, 50);
     }
 
     const handleUndoEditTask = () => {
@@ -69,7 +71,8 @@ function TaskList(){
                                     <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
                                             onChange={e => setEditedTaskTitle(e.target.value)} 
                                             disableUnderline
-                                            disabled={isTaskEdited(task.id) ? true : false}>
+                                            disabled={isTaskEdited(task.id) ? true : false}
+                                            inputRef={el => inputRefs.current[task.id] = el}>
                                     </Input>
                                 </Stack>
                                 <Stack direction="row">
