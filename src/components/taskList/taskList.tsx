@@ -19,10 +19,10 @@ function TaskList(){
     const clearEditedTask = () => {setEditedTaskId(null); setEditedTaskTitle("")};
     const inputRefs = useRef<HTMLInputElement[]>([]);
 
-    const onEditClick = (id: number, title: string) => {
+    const onEditClick = async (id: number, title: string) => {
         setEditedTaskId(id);
-        setEditedTaskTitle(title);
-        setTimeout(function() {inputRefs.current[id].focus()}, 50);
+        await setEditedTaskTitle(title);
+        inputRefs.current[id].focus();
     }
 
     const handleUndoEditTask = () => {
