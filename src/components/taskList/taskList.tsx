@@ -61,21 +61,19 @@ function TaskList(){
                 {filteredTasks.map(task => (
                     <Collapse key={task.id}>
                         <Card sx={{margin: "5px"}}>
-                            <Stack  direction="row" sx={{ justifyContent: "space-between"}}>
-                                <Stack direction="row" >
-                                    <IconButton onClick={() => changeTaskStatus(task)} 
-                                            loading={task.updatingPending} color="primary"
-                                            disabled={task.deletingPending || !isTaskEdited(task.id)}>
+                            <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
+                                <IconButton onClick={() => changeTaskStatus(task) } sx={{flex: "5"}}
+                                        loading={task.updatingPending} color="primary"
+                                        disabled={task.deletingPending || !isTaskEdited(task.id)}>
                                         {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
-                                    </IconButton>
-                                    <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
-                                            onChange={e => setEditedTaskTitle(e.target.value)} 
-                                            disableUnderline
-                                            disabled={isTaskEdited(task.id) ? true : false}
-                                            inputRef={el => inputRefs.current[task.id] = el}>
-                                    </Input>
-                                </Stack>
-                                <Stack direction="row">
+                                </IconButton>
+                                <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
+                                        onChange={e => setEditedTaskTitle(e.target.value)} 
+                                        disableUnderline sx={{flex: "85"}} multiline
+                                        disabled={isTaskEdited(task.id) ? true : false}
+                                        inputRef={el => inputRefs.current[task.id] = el}>
+                                </Input>
+                                <Stack direction={"row"} sx={{flex: "10"}}>
                                     {editedTaskId !== task.id
                                     ? 
                                     <>
