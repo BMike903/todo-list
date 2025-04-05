@@ -62,7 +62,7 @@ function TaskList(){
                     <Collapse key={task.id}>
                         <Card sx={{margin: "5px"}}>
                             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
-                                <IconButton onClick={() => changeTaskStatus(task) } sx={{flex: "5"}}
+                                <IconButton onClick={() => changeTaskStatus(task) } sx={{flex: "5", maxHeight: "40px"}}
                                         loading={task.updatingPending} color="primary"
                                         disabled={task.deletingPending || !isTaskEdited(task.id)}>
                                         {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
@@ -77,21 +77,21 @@ function TaskList(){
                                     {editedTaskId !== task.id
                                     ? 
                                     <>
-                                        <IconButton color="secondary" onClick={() => onEditClick(task.id, task.title)}
+                                        <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={() => onEditClick(task.id, task.title)}
                                                 disabled={task.deletingPending || task.updatingPending}>
                                             <Edit/>
                                         </IconButton>
                                         <IconButton onClick={() => deleteTask(task)} disabled={task.updatingPending}
-                                                    loading={task.deletingPending} color="secondary">
+                                                    loading={task.deletingPending} color="secondary" sx={{maxHeight: "40px"}}>
                                             <Delete/>
                                         </IconButton>
                                     </>
                                     :
                                     <>
-                                        <IconButton color="secondary" onClick={() => handleEditTask()}>
+                                        <IconButton color="secondary" onClick={() => handleEditTask()} sx={{maxHeight: "40px"}}>
                                             <Done/>   
                                         </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleUndoEditTask()}>
+                                        <IconButton color="secondary" onClick={() => handleUndoEditTask()} sx={{maxHeight: "40px"}}>
                                             <Undo/>   
                                         </IconButton>
                                     </>}
