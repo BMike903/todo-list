@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
-import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input } from "@mui/material";
+import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo } from "@mui/icons-material";
+import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo, AddTask } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
@@ -35,6 +35,15 @@ function TaskList(){
             changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
         }
         clearEditedTask();
+    }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => setIsModalOpen(false);
+
+    const [newTaskTitle, setNewTaskTitle] = useState("");
+    const addTask = () => {
+        console.log("Task with title: ", newTaskTitle, " should be added");
     }
 
     const loadTasks = async () => {
@@ -140,6 +149,24 @@ function TaskList(){
         }
     }
 
+    const renderModal = () => {
+        return(
+            <Modal keepMounted open={isModalOpen} onClose={handleModalClose} >
+                <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                        width: 800, height: 150,  bgcolor: 'background.paper', border: '2px solid #000',
+                        boxShadow: 24, p: 4}}
+                >
+                    <Typography variant="h5">Add new task</Typography>
+                    <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
+                        <TextField onChange={e => setNewTaskTitle(e.target.value)} 
+                            multiline fullWidth value={newTaskTitle} />
+                        <Button onClick={addTask} variant="contained" color="secondary">AddTask</Button>
+                    </Stack>
+                </Box>
+            </Modal>
+        )
+    }
+
     const renderTasks = () => {
         const renderTasksSkeleton = (count = 8) => {
             const skeletons = [];
@@ -163,14 +190,20 @@ function TaskList(){
             return(
                 <Grid2 container spacing={1} sx={{flexDirection: {lg: "row", md: "column", sm: "column"}, width: {lg: "100%", md: "100%"}}}>
                     <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
-                        <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
+                        <Stack direction={"row"} justifyContent={"center"}>
+                            <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
+                            <IconButton color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
+                        </Stack>
                         <Stack>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                                 renderTasksByCompletion(false)}
                         </Stack>
                     </Grid2>
                     <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
-                        <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
+                        <Stack direction={"row"} justifyContent={"center"}>
+                            <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
+                            <IconButton color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
+                        </Stack>
                         <Stack spacing={2}>
                         {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
                             renderTasksByCompletion(true)}
@@ -183,6 +216,7 @@ function TaskList(){
 
     return(
         <>
+            {renderModal()}
             {renderUpdatingTaskStatusError()}
             {renderUpdatingTaskTitleError()}
             {renderDeletingTaskError()}
