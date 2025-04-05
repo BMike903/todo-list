@@ -10,8 +10,8 @@ import { useTasksActions } from "../../hooks/useActions";
 
 function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const {tasks, loading: tasksLoading, error: tasksError, updatingTaskError, deletingTaskError, updatingTaskTitleError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError} = useTasksActions();
+    const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError, deletingTaskError, updatingTaskTitleError} = useTypedSelector(state => state.tasks);
+    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError, addTask} = useTasksActions();
 
     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
@@ -42,8 +42,10 @@ function TaskList(){
     const handleModalClose = () => setIsModalOpen(false);
 
     const [newTaskTitle, setNewTaskTitle] = useState("");
-    const addTask = () => {
-        console.log("Task with title: ", newTaskTitle, " should be added");
+    const handleAddTask = () => {
+        setNewTaskTitle("");
+        addTask(newTaskTitle);
+        handleModalClose();
     }
 
     const loadTasks = async () => {
@@ -160,7 +162,7 @@ function TaskList(){
                     <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
                         <TextField onChange={e => setNewTaskTitle(e.target.value)} 
                             multiline fullWidth value={newTaskTitle} />
-                        <Button onClick={addTask} variant="contained" color="secondary">AddTask</Button>
+                        <Button onClick={handleAddTask} variant="contained" color="secondary">AddTask</Button>
                     </Stack>
                 </Box>
             </Modal>
@@ -192,7 +194,7 @@ function TaskList(){
                     <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
-                            <IconButton color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
+                            <IconButton loading={addingTask} color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
                         </Stack>
                         <Stack>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 

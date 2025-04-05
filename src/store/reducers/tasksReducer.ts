@@ -4,6 +4,7 @@ const initialState: TasksState = {
     tasks: [],
     loading: false,
     error: null,
+    addingTask: false,
     updatingTaskError: null,
     deletingTaskError: null,
     updatingTaskTitleError: null
@@ -23,6 +24,10 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
             return {...state, deletingTaskError: null}
         case TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR:
             return {...state, updatingTaskTitleError: null}
+        case TasksActionTypes.ADD_TASK:
+            return {...state, addingTask: true};
+        case TasksActionTypes.ADD_TASK_SUCCESS:
+            return {...state, addingTask: false, tasks: [...state.tasks, action.payload]}
         case TaskActionTypes.CHANGE_TASK_STATUS: {
             let taskToUpdate = action.payload;
             taskToUpdate = {...taskToUpdate, updatingPending: true}

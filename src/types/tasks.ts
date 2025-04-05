@@ -22,6 +22,7 @@ export enum TaskActionTypes{
     CHANGE_TASK_TITLE = "CHANGE_TASK_TITLE",
     CHANGE_TASK_TITLE_SUCESS = "CHANGE_TASK_TITLE_SUCESS",
     CHANGE_TASK_TITLE_ERROR = "CHANGE_TASK_TITLE_ERROR",
+
 }
 
 interface ChangeTaskStatusAction {
@@ -63,6 +64,7 @@ interface ChangeTaskTitleErrorAction {
     payload: string
 }
 
+
 export type TaskAction = ChangeTaskStatusAction |
                             ChangeTaskStatusSuccessAction |
                             ChangeTaskStatusErrorAction |
@@ -78,6 +80,7 @@ export type TasksState = {
     tasks: Task[] | [],
     loading: boolean,
     error: string | null,
+    addingTask: boolean,
     updatingTaskError: string | null,
     updatingTaskTitleError: string | null,
     deletingTaskError: string | null,
@@ -89,7 +92,9 @@ export enum TasksActionTypes{
     FETCH_TASKS_ERROR = "FETCH_TASKS_ERROR",
     CLEAR_UPDATING_TASK_ERROR = "CLEAR_UPDATING_TASK_ERROR",
     CLEAR_DELETING_TASK_ERROR = "CLEAR_DELETING_TASK_ERROR",
-    CLEAR_UPDATING_TASK_TITLE_ERROR = "CLEAR_UPDATING_TASK_TITLE_ERROR"
+    CLEAR_UPDATING_TASK_TITLE_ERROR = "CLEAR_UPDATING_TASK_TITLE_ERROR",
+    ADD_TASK = "ADD_TASK",
+    ADD_TASK_SUCCESS = "ADD_TASK_SUCCESS",
 }
 
 interface FetchTasksAction {
@@ -103,6 +108,7 @@ interface FetchTasksErrorAction {
     type: TasksActionTypes.FETCH_TASKS_ERROR,
     payload: string
 }
+
 interface ClearUpdatingTaskError {
     type: TasksActionTypes.CLEAR_UPDATING_TASK_ERROR,
 }
@@ -113,9 +119,19 @@ interface ClearUpdatingTaskTitleError {
     type: TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR,
 }
 
+interface AddTaskAction {
+    type: TasksActionTypes.ADD_TASK,
+}
+interface AddTaskSuccessAction {
+    type: TasksActionTypes.ADD_TASK_SUCCESS,
+    payload: Task
+}
+
 export type TasksAction = FetchTasksAction |
                             FetchTasksSuccessAction |
                             FetchTasksErrorAction |
                             ClearUpdatingTaskError |
                             ClearDeletingTaskError |
-                            ClearUpdatingTaskTitleError;
+                            ClearUpdatingTaskTitleError |
+                            AddTaskAction |
+                            AddTaskSuccessAction;
