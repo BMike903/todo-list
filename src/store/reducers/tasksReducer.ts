@@ -54,7 +54,7 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         }
         case TaskActionTypes.CHANGE_TASK_STATUS_ERROR: {
             const newTasks = state.tasks.map((task) => {
-                return {...task, updating: false}
+                return {...task, updating: false, updatingPending: false}
             })
             return {...state, tasks: newTasks, updatingTaskError: action.payload};
         }
