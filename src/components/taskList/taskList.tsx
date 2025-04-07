@@ -150,7 +150,7 @@ function TaskList(){
         )
     }
 
-    const renderError = (error: string | null, clearErrorAction: any) => {
+    const renderError = (error: string | null, clearErrorAction: typeof clearUpdateTaskStatusError) => {
         if(error){
             return(
                 <Snackbar open={true} onClose={() => dispatch(clearErrorAction())} 
