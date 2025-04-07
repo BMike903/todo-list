@@ -150,47 +150,11 @@ function TaskList(){
         )
     }
 
-    const renderUpdatingTaskStatusError = () => {
-        if(updatingTaskError){
+    const renderError = (error: string | null, clearErrorAction: any) => {
+        if(error){
             return(
-                <Snackbar open={true} onClose={() => clearUpdateTaskStatusError()} 
-                                message={updatingTaskError} autoHideDuration={3000} />
-            )
-        }
-        else{
-            return null;
-        }
-    }
-
-    const renderUpdatingTaskTitleError = () => {
-        if(updatingTaskTitleError){
-            return(
-                <Snackbar open={true} onClose={() => clearUpdateTaskTitleError()} 
-                                message={updatingTaskTitleError} autoHideDuration={3000} />
-            )
-        }
-        else{
-            return null;
-        }
-    }
-
-    const renderDeletingTaskError = () => {
-        if(deletingTaskError){
-            return(
-                <Snackbar open={true} onClose={() => clearDeletingTaskError()} 
-                                message={deletingTaskError} autoHideDuration={3000} />
-            )
-        }
-        else{
-            return null;
-        }
-    }
-
-    const renderAddingTaskError = () => {
-        if(addingTaskError){
-            return(
-                <Snackbar open={true} onClose={() => dispatch(clearAddTaskErrorActon())} 
-                                message={addingTaskError} autoHideDuration={3000} />
+                <Snackbar open={true} onClose={() => dispatch(clearErrorAction())} 
+                                message={error} autoHideDuration={3000} />
             )
         }
         else{
@@ -266,10 +230,10 @@ function TaskList(){
     return(
         <>
             {renderModal()}
-            {renderAddingTaskError()}
-            {renderUpdatingTaskStatusError()}
-            {renderUpdatingTaskTitleError()}
-            {renderDeletingTaskError()}
+            {renderError(updatingTaskError, clearUpdateTaskStatusError)}
+            {renderError(updatingTaskTitleError, clearUpdateTaskTitleError)}
+            {renderError(deletingTaskError, clearDeletingTaskError)}
+            {renderError(addingTaskError, clearAddTaskErrorActon)}
             {renderTasks()}
         </>
     )
