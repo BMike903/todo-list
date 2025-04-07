@@ -111,3 +111,5 @@ export const clearUpdateTaskTitleError = () => {
 
 export const addTaskActon = () => {return {type: TasksActionTypes.ADD_TASK}};
 export const addTaskSuccessActon = (data: Task) => {return {type: TasksActionTypes.ADD_TASK_SUCCESS, payload: data}};
+export const addTaskErrorAction = (error: string) => {return {type: TasksActionTypes.ADD_TASK_ERROR, payload: error}};
+export const clearAddTaskErrorActon = () => {return {type: TasksActionTypes.CLEAR_ADD_TASK_ERROR}}

@@ -81,6 +81,7 @@ export type TasksState = {
     loading: boolean,
     error: string | null,
     addingTask: boolean,
+    addingTaskError: string | null,
     updatingTaskError: string | null,
     updatingTaskTitleError: string | null,
     deletingTaskError: string | null,
@@ -95,6 +96,8 @@ export enum TasksActionTypes{
     CLEAR_UPDATING_TASK_TITLE_ERROR = "CLEAR_UPDATING_TASK_TITLE_ERROR",
     ADD_TASK = "ADD_TASK",
     ADD_TASK_SUCCESS = "ADD_TASK_SUCCESS",
+    ADD_TASK_ERROR = "ADD_TASK_ERROR",
+    CLEAR_ADD_TASK_ERROR = "CLEAR_ADD_TASK_ERROR",
 }
 
 interface FetchTasksAction {
@@ -126,6 +129,13 @@ interface AddTaskSuccessAction {
     type: TasksActionTypes.ADD_TASK_SUCCESS,
     payload: Task
 }
+interface AddTaskErrorActon {
+    type: TasksActionTypes.ADD_TASK_ERROR,
+    payload: string,
+}
+interface ClearAddTaskErrorAction {
+    type: TasksActionTypes.CLEAR_ADD_TASK_ERROR,
+}
 
 export type TasksAction = FetchTasksAction |
                             FetchTasksSuccessAction |
@@ -134,4 +144,6 @@ export type TasksAction = FetchTasksAction |
                             ClearDeletingTaskError |
                             ClearUpdatingTaskTitleError |
                             AddTaskAction |
-                            AddTaskSuccessAction;
+                            AddTaskSuccessAction |
+                            AddTaskErrorActon |
+                            ClearAddTaskErrorAction;

@@ -7,12 +7,14 @@ import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo, AddTask } fro
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
+import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 
 
 function TaskList(){
     const dispatch = useDispatch()
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError, deletingTaskError, updatingTaskTitleError} = useTypedSelector(state => state.tasks);
+    const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
+        deletingTaskError, updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
     const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask,
         clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError,
         addTaskActon, addTaskSuccessActon} = useTasksActions();
@@ -53,6 +55,7 @@ function TaskList(){
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const handleAddTask = async () => {
         setNewTaskTitle("");
+
         try {
             dispatch(addTaskActon());
             const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
@@ -73,9 +76,10 @@ function TaskList(){
 
             const data = await response.json();           
             dispatch(addTaskSuccessActon(data));
-        }catch(e){
-            console.log(e);
+        }catch{
+            dispatch(addTaskErrorAction("Error occured while trying to add task"));
         }
+
         handleModalClose();
     }
 
@@ -182,6 +186,18 @@ function TaskList(){
         }
     }
 
+    const renderAddingTaskError = () => {
+        if(addingTaskError){
+            return(
+                <Snackbar open={true} onClose={() => dispatch(clearAddTaskErrorActon())} 
+                                message={addingTaskError} autoHideDuration={3000} />
+            )
+        }
+        else{
+            return null;
+        }
+    }
+
     const renderModal = () => {
         return(
             <Modal keepMounted open={isModalOpen} onClose={handleModalClose} >
@@ -250,6 +266,7 @@ function TaskList(){
     return(
         <>
             {renderModal()}
+            {renderAddingTaskError()}
             {renderUpdatingTaskStatusError()}
             {renderUpdatingTaskTitleError()}
             {renderDeletingTaskError()}
