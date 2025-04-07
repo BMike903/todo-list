@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 
 import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
@@ -9,9 +10,12 @@ import { useTasksActions } from "../../hooks/useActions";
 
 
 function TaskList(){
+    const dispatch = useDispatch()
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError, deletingTaskError, updatingTaskTitleError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask, clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError, addTask} = useTasksActions();
+    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask,
+        clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError,
+        addTaskActon, addTaskSuccessActon} = useTasksActions();
 
     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
@@ -39,12 +43,39 @@ function TaskList(){
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleModalOpen = () => setIsModalOpen(true);
-    const handleModalClose = () => setIsModalOpen(false);
+    const handleModalClose = () => {
+        if(addingTask) {
+            return
+        };
+        setIsModalOpen(false)
+    };
 
     const [newTaskTitle, setNewTaskTitle] = useState("");
-    const handleAddTask = () => {
+    const handleAddTask = async () => {
         setNewTaskTitle("");
-        addTask(newTaskTitle);
+        try {
+            dispatch(addTaskActon());
+            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
+                {
+                    method: "POST",
+                    headers:{"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        "userId": 4,
+                        "title": newTaskTitle,
+                        "completed": false
+                    })
+                } 
+            );
+
+            if(!response.ok) {
+                throw new Error("Error occured while adding new task");
+            }
+
+            const data = await response.json();           
+            dispatch(addTaskSuccessActon(data));
+        }catch(e){
+            console.log(e);
+        }
         handleModalClose();
     }
 

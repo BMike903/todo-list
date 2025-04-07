@@ -109,33 +109,5 @@ export const clearUpdateTaskTitleError = () => {
     return {type: TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR};
 }
 
-export const addTask = (newTitle: string) : any => {
-    return async (dispatch: Dispatch<TasksAction>) => {
-        try {
-            dispatch({type: TasksActionTypes.ADD_TASK});
-
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
-                {
-                    method: "POST",
-                    headers:{"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        "userId": 4,
-                        "title": newTitle,
-                        "completed": false
-                    })
-                } 
-            );
-
-            if(!response.ok){
-                throw new Error(`Failed to update task title, status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(data)
-            dispatch({type: TasksActionTypes.ADD_TASK_SUCCESS, payload: data});
-        }
-        catch(e) {
-            console.log(e)
-        }
-    }
-}
+export const addTaskActon = () => {return {type: TasksActionTypes.ADD_TASK}};
+export const addTaskSuccessActon = (data: Task) => {return {type: TasksActionTypes.ADD_TASK_SUCCESS, payload: data}};
