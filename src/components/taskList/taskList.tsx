@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
 
 import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
@@ -9,23 +8,7 @@ import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo, AddTask } fro
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
 import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
-
-
-const selectTasks = (state) => state.tasks.tasks;
-
-const completedTasksSelector = createSelector(
-    [selectTasks],
-    (tasks) => {
-        return tasks.filter(task => task.completed);
-    }
-);
-
-const uncompletedTasksSelector = createSelector(
-    [selectTasks],
-    (tasks) => {
-        return tasks.filter(task => !task.completed);
-    }
-);
+import { allTasksSelector, completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
 
 
 function TaskList(){
@@ -33,7 +16,7 @@ function TaskList(){
 
     const completedTasks = useTypedSelector(completedTasksSelector);
     const uncompletedTasks = useTypedSelector(uncompletedTasksSelector);
-    const tasks = useTypedSelector(selectTasks);
+    const allTasks = useTypedSelector(allTasksSelector);
 
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
@@ -59,7 +42,7 @@ function TaskList(){
     }
 
     const handleEditTask = () => {
-        const oldTitle = tasks.filter(task => task.id === editedTaskId)[0].title;
+        const oldTitle = allTasks.filter(task => task.id === editedTaskId)[0].title;
         if(editedTaskTitle !== oldTitle){
             changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
         }
