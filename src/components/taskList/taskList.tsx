@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
 
 import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
@@ -10,8 +11,26 @@ import { useTasksActions } from "../../hooks/useActions";
 import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 
 
+const completedTasksSelector = createSelector(
+    [state => state.tasks.tasks],
+    (tasks) => {
+        return tasks.filter(task => task.completed);
+    }
+);
+
+const uncompletedTasksSelector = createSelector(
+    [state => state.tasks.tasks],
+    (tasks) => {
+        return tasks.filter(task => !task.completed);
+    }
+);
+
 function TaskList(){
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    const completedTasks = useSelector(completedTasksSelector);
+    const uncompletedTasks = useSelector(uncompletedTasksSelector);
+
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
         deletingTaskError, updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
@@ -97,14 +116,14 @@ function TaskList(){
 	}, [user]);
 
     const renderTasksByCompletion = (completed = true) => {
-        const filteredTasks = tasks.filter(task => task.completed === completed);
-        if(filteredTasks.length === 0){
+        const taskArr = completed ? completedTasks : uncompletedTasks;
+        if(taskArr.length === 0){
             const message = completed ? "No completed tasks" : "No uncompleted tasks"
             return <Typography textAlign={"center"} sx={{fontSize: "1.5rem"}}>{message}</Typography>
         }
         return(
             <TransitionGroup>
-                {filteredTasks.map(task => (
+                {taskArr.map(task => (
                     <Collapse key={task.id}>
                         <Card sx={{margin: "5px"}}>
                             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
