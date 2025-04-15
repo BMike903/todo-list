@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
@@ -11,28 +11,32 @@ import { useTasksActions } from "../../hooks/useActions";
 import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 
 
+const selectTasks = (state) => state.tasks.tasks;
+
 const completedTasksSelector = createSelector(
-    [state => state.tasks.tasks],
+    [selectTasks],
     (tasks) => {
         return tasks.filter(task => task.completed);
     }
 );
 
 const uncompletedTasksSelector = createSelector(
-    [state => state.tasks.tasks],
+    [selectTasks],
     (tasks) => {
         return tasks.filter(task => !task.completed);
     }
 );
 
+
 function TaskList(){
     const dispatch = useDispatch();
 
-    const completedTasks = useSelector(completedTasksSelector);
-    const uncompletedTasks = useSelector(uncompletedTasksSelector);
+    const completedTasks = useTypedSelector(completedTasksSelector);
+    const uncompletedTasks = useTypedSelector(uncompletedTasksSelector);
+    const tasks = useTypedSelector(selectTasks);
 
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const {tasks, loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
+    const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
         deletingTaskError, updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
     const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask,
         clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError,
