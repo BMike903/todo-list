@@ -1,14 +1,15 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Card, Input, Modal, Box, TextField } from "@mui/material";
+import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Modal, Box, TextField } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo, AddTask } from "@mui/icons-material";
+import { AddTask } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
 import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
-import { allTasksSelector, completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
+import { completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
+import { Task } from "../task/task";
 
 
 function TaskList(){
@@ -16,16 +17,15 @@ function TaskList(){
 
     const completedTasks = useTypedSelector(completedTasksSelector);
     const uncompletedTasks = useTypedSelector(uncompletedTasksSelector);
-    const allTasks = useTypedSelector(allTasksSelector);
 
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
         deletingTaskError, updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, changeTaskStatus, clearUpdateTaskStatusError, deleteTask,
-        clearDeletingTaskError, changeTaskTitle, clearUpdateTaskTitleError,
+    const {fetchTasks, clearUpdateTaskStatusError,
+        clearDeletingTaskError, clearUpdateTaskTitleError,
         addTaskActon, addTaskSuccessActon} = useTasksActions();
 
-    const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
+/*     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
     const [editedTaskTitle, setEditedTaskTitle] = useState("");
     const isTaskEdited = (taskId: number) => editedTaskId !== taskId;
     const clearEditedTask = () => {setEditedTaskId(null); setEditedTaskTitle("")};
@@ -47,7 +47,7 @@ function TaskList(){
             changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
         }
         clearEditedTask();
-    }
+    } */
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleModalOpen = () => setIsModalOpen(true);
@@ -112,7 +112,8 @@ function TaskList(){
             <TransitionGroup>
                 {taskArr.map(task => (
                     <Collapse key={task.id}>
-                        <Card sx={{margin: "5px"}}>
+                        <Task id={task.id}/>
+                        {/* <Card sx={{margin: "5px"}}>
                             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
                                 <IconButton onClick={() => changeTaskStatus(task) } sx={{flex: "5", maxHeight: "40px"}}
                                         loading={task.updatingPending} color="primary"
@@ -149,7 +150,7 @@ function TaskList(){
                                     </>}
                                 </Stack>
                             </Stack>
-                        </Card>
+                        </Card> */}
                     </Collapse>))
                 }
             </TransitionGroup>
