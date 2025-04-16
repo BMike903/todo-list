@@ -4,13 +4,18 @@ import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo } from "@mui/i
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { taskByIdSelector } from "../../store/selectors/tasksSelectors";
 
-export function Task({id}: {id: number}) {
+type TaskProps = {
+    id: number,
+    changeTaskStatus: Function
+}
+
+export function Task({id, changeTaskStatus}: TaskProps) {
     const task = useTypedSelector(state => taskByIdSelector(id, state));
     
     return (
         <Card sx={{margin: "5px"}}>
             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
-                <IconButton sx={{flex: "5", maxHeight: "40px"}} color="primary">
+                <IconButton sx={{flex: "5", maxHeight: "40px"}} color="primary" onClick={() => changeTaskStatus(task)}>
                     {task.completed ? <CheckBoxOutlineBlank/> : <CheckBox/>}
                 </IconButton>
 
