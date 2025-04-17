@@ -3,10 +3,11 @@ import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo } from "@mui/i
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { taskByIdSelector } from "../../store/selectors/tasksSelectors";
+import { Task as TaskType } from "../../types/tasks";
 
 type TaskProps = {
     id: number,
-    changeTaskStatus: Function
+    changeTaskStatus: (task: TaskType) => void,
 }
 
 export function Task({id, changeTaskStatus}: TaskProps) {
