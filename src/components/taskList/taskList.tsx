@@ -27,30 +27,6 @@ function TaskList(){
         clearDeletingTaskError, clearUpdateTaskTitleError,
         addTaskActon, addTaskSuccessActon} = useTasksActions();
 
-/*     const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
-    const [editedTaskTitle, setEditedTaskTitle] = useState("");
-    const isTaskEdited = (taskId: number) => editedTaskId !== taskId;
-    const clearEditedTask = () => {setEditedTaskId(null); setEditedTaskTitle("")};
-    const inputRefs = useRef<HTMLInputElement[]>([]);
-
-    const onEditClick = async (id: number, title: string) => {
-        setEditedTaskId(id);
-        await setEditedTaskTitle(title);
-        inputRefs.current[id].focus();
-    }
-
-    const handleUndoEditTask = () => {
-        clearEditedTask();
-    }
-
-    const handleEditTask = () => {
-        const oldTitle = allTasks.filter(task => task.id === editedTaskId)[0].title;
-        if(editedTaskTitle !== oldTitle){
-            changeTaskTitle({id: editedTaskId as number, newTitle: editedTaskTitle});
-        }
-        clearEditedTask();
-    } */
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleModalOpen = () => setIsModalOpen(true);
     const handleModalClose = () => {
@@ -140,44 +116,6 @@ function TaskList(){
                 {taskArr.map(task => (
                     <Collapse key={task.id}>
                         <Task id={task.id} changeTaskStatus={changeTaskStatus}/>
-                        {/* <Card sx={{margin: "5px"}}>
-                            <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
-                                <IconButton onClick={() => changeTaskStatus(task) } sx={{flex: "5", maxHeight: "40px"}}
-                                        loading={task.updatingPending} color="primary"
-                                        disabled={task.deletingPending || !isTaskEdited(task.id)}>
-                                        {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
-                                </IconButton>
-                                <Input value={isTaskEdited(task.id) ? task.title : editedTaskTitle }
-                                        onChange={e => setEditedTaskTitle(e.target.value)} 
-                                        disableUnderline sx={{flex: "85"}} multiline
-                                        disabled={isTaskEdited(task.id) ? true : false}
-                                        inputRef={el => inputRefs.current[task.id] = el}>
-                                </Input>
-                                <Stack direction={"row"} sx={{flex: "10"}}>
-                                    {editedTaskId !== task.id
-                                    ? 
-                                    <>
-                                        <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={() => onEditClick(task.id, task.title)}
-                                                disabled={task.deletingPending || task.updatingPending}>
-                                            <Edit/>
-                                        </IconButton>
-                                        <IconButton onClick={() => deleteTask(task)} disabled={task.updatingPending}
-                                                    loading={task.deletingPending} color="secondary" sx={{maxHeight: "40px"}}>
-                                            <Delete/>
-                                        </IconButton>
-                                    </>
-                                    :
-                                    <>
-                                        <IconButton color="secondary" onClick={() => handleEditTask()} sx={{maxHeight: "40px"}}>
-                                            <Done/>   
-                                        </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleUndoEditTask()} sx={{maxHeight: "40px"}}>
-                                            <Undo/>   
-                                        </IconButton>
-                                    </>}
-                                </Stack>
-                            </Stack>
-                        </Card> */}
                     </Collapse>))
                 }
             </TransitionGroup>
