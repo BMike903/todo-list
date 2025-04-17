@@ -1,5 +1,5 @@
 import { Card, IconButton, Input, Stack } from "@mui/material";
-import { CheckBox, CheckBoxOutlineBlank, Delete, Edit, Done, Undo } from "@mui/icons-material";
+import { CheckBox, CheckBoxOutlineBlank, Edit, Done, Undo } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { taskByIdSelector } from "../../store/selectors/tasksSelectors";
@@ -26,9 +26,6 @@ export function Task({id, changeTaskStatus}: TaskProps) {
                 <Stack direction="row" sx={{flex: "10"}}>
                     <IconButton sx={{maxHeight: "40px"}} color="secondary">
                         <Edit/>
-                    </IconButton>
-                    <IconButton sx={{maxHeight: "40px"}} color="secondary">
-                        <Delete/>
                     </IconButton>
                 </Stack>
             </Stack>
