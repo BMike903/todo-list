@@ -10,8 +10,6 @@ import { useTasksActions } from "../../hooks/useActions";
 import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 import { completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
 import { Task } from "../task/task";
-import { TaskActionTypes } from "../../types/tasks";
-import { Task as TaskType } from "../../types/tasks";
 
 
 function TaskList(){
@@ -39,7 +37,6 @@ function TaskList(){
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const handleAddTask = async () => {
         setNewTaskTitle("");
-
         try {
             dispatch(addTaskActon());
             const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
@@ -76,30 +73,7 @@ function TaskList(){
         }
 	}
 
-    const changeTaskStatus = async (task: TaskType) => {
-        try{
-            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS, payload: task});
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${task.id}`,
-                {
-                    method: "PATCH",
-                    headers:{"Content-Type": "application/json"},
-                    body: JSON.stringify({"completed": !task.completed})
-                } 
-            );
-
-            if(!response.ok){
-                throw new Error(`Failed to update task, status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS, payload: data})
-        }
-        catch{
-            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_ERROR, 
-                payload: "Error occured while loading tasks"
-            })
-        }
-    }
+    
 
 	useEffect(() => {
 		loadTasks();
@@ -115,7 +89,7 @@ function TaskList(){
             <TransitionGroup>
                 {taskArr.map(task => (
                     <Collapse key={task.id}>
-                        <Task id={task.id} changeTaskStatus={changeTaskStatus} />
+                        <Task id={task.id} />
                     </Collapse>))
                 }
             </TransitionGroup>

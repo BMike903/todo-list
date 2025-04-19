@@ -10,11 +10,10 @@ import { Task as TaskType, TaskTitleUpdate } from "../../types/tasks";
 import { TaskActionTypes } from "../../types/tasks";
 
 type TaskProps = {
-    id: number,
-    changeTaskStatus: (task: TaskType) => void
+    id: number
 }
 
-export function Task({id, changeTaskStatus}: TaskProps) {
+export function Task({id}: TaskProps) {
     const task = useTypedSelector(state => taskByIdSelector(id, state));
     const dispatch = useDispatch();
 
@@ -60,6 +59,31 @@ export function Task({id, changeTaskStatus}: TaskProps) {
             setTitle(task.title);
             dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_ERROR, 
                 payload: "Error occured while updating task title"
+            })
+        }
+    }
+
+    const changeTaskStatus = async (task: TaskType) => {
+        try{
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS, payload: task});
+            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${task.id}`,
+                {
+                    method: "PATCH",
+                    headers:{"Content-Type": "application/json"},
+                    body: JSON.stringify({"completed": !task.completed})
+                } 
+            );
+
+            if(!response.ok){
+                throw new Error(`Failed to update task, status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS, payload: data})
+        }
+        catch{
+            dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_ERROR, 
+                payload: "Error occured while loading tasks"
             })
         }
     }
