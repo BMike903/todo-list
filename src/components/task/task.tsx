@@ -5,14 +5,15 @@ import { CheckBox, CheckBoxOutlineBlank, Edit, Done, Undo } from "@mui/icons-mat
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { taskByIdSelector } from "../../store/selectors/tasksSelectors";
-import { Task as TaskType } from "../../types/tasks";
+import { Task as TaskType, TaskTitleUpdate } from "../../types/tasks";
 
 type TaskProps = {
     id: number,
     changeTaskStatus: (task: TaskType) => void,
+    changeTaskTitle: (taskUpdate: TaskTitleUpdate) => void
 }
 
-export function Task({id, changeTaskStatus}: TaskProps) {
+export function Task({id, changeTaskStatus, changeTaskTitle}: TaskProps) {
     const task = useTypedSelector(state => taskByIdSelector(id, state));
 
     const [title, setTitle] = useState(task.title);
@@ -22,6 +23,11 @@ export function Task({id, changeTaskStatus}: TaskProps) {
     const onUndoClick = () => {
         toggleEdited();
         setTitle(task.title);
+    }
+    const onDoneClick = async () => {
+        if(title === task.title) return;
+        toggleEdited();
+        changeTaskTitle({id: task.id, newTitle: title});
     }
     
     return (
@@ -34,22 +40,27 @@ export function Task({id, changeTaskStatus}: TaskProps) {
                 </IconButton>
 
                 <Input disableUnderline multiline sx={{flex: "85"}} value={title}
-                    onChange={e => setTitle(e.target.value)} disabled={!isEdited} />
+                    onChange={e => setTitle(e.target.value)} 
+                    disabled={!isEdited || task.updatingPending || task.deletingPending} 
+                />
 
                 <Stack direction="row" sx={{flex: "10"}}>
                     {!isEdited ? 
                         <IconButton sx={{maxHeight: "40px"}} color="secondary"
                             onClick={toggleEdited}
+                            disabled={task.updatingPending || task.deletingPending} 
                         >
                             <Edit/>
                         </IconButton>
                     :
                         <>
-                        <IconButton sx={{maxHeight: "40px"}} color="secondary">
+                        <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={onDoneClick}
+                            disabled={task.updatingPending || task.deletingPending} 
+                        >
                             <Done/>
                         </IconButton>
-                        <IconButton sx={{maxHeight: "40px"}} color="secondary"
-                            onClick={onUndoClick}
+                        <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={onUndoClick} 
+                            disabled={task.updatingPending || task.deletingPending} 
                         >
                             <Undo/>
                         </IconButton>
