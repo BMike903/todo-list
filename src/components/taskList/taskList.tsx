@@ -11,7 +11,7 @@ import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-c
 import { completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
 import { Task } from "../task/task";
 import { TaskActionTypes } from "../../types/tasks";
-import { Task as TaskType, TaskTitleUpdate } from "../../types/tasks";
+import { Task as TaskType } from "../../types/tasks";
 
 
 function TaskList(){
@@ -67,32 +67,6 @@ function TaskList(){
         handleModalClose();
     }
 
-    const changeTaskTitle = async (taskUpdate: TaskTitleUpdate) => {
-        try {
-            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE, payload: {...taskUpdate}});
-
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${taskUpdate.id}`,
-                {
-                    method: "PATCH",
-                    headers:{"Content-Type": "application/json"},
-                    body: JSON.stringify({"title": taskUpdate.newTitle})
-                } 
-            );
-
-            if(!response.ok){
-                throw new Error(`Failed to update task title, status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS, payload: data})
-        }
-        catch {
-            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_ERROR, 
-                payload: "Error occured while updating task"
-            })
-        }
-    }
-
     const loadTasks = async () => {
         if(userLoading){
             return;
@@ -141,8 +115,7 @@ function TaskList(){
             <TransitionGroup>
                 {taskArr.map(task => (
                     <Collapse key={task.id}>
-                        <Task id={task.id} changeTaskStatus={changeTaskStatus} 
-                                changeTaskTitle={changeTaskTitle}/>
+                        <Task id={task.id} changeTaskStatus={changeTaskStatus} />
                     </Collapse>))
                 }
             </TransitionGroup>

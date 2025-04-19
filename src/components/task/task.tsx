@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 
 import { Card, IconButton, Input, Stack } from "@mui/material";
 import { CheckBox, CheckBoxOutlineBlank, Edit, Done, Undo } from "@mui/icons-material";
@@ -6,15 +7,16 @@ import { CheckBox, CheckBoxOutlineBlank, Edit, Done, Undo } from "@mui/icons-mat
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { taskByIdSelector } from "../../store/selectors/tasksSelectors";
 import { Task as TaskType, TaskTitleUpdate } from "../../types/tasks";
+import { TaskActionTypes } from "../../types/tasks";
 
 type TaskProps = {
     id: number,
-    changeTaskStatus: (task: TaskType) => void,
-    changeTaskTitle: (taskUpdate: TaskTitleUpdate) => void
+    changeTaskStatus: (task: TaskType) => void
 }
 
-export function Task({id, changeTaskStatus, changeTaskTitle}: TaskProps) {
+export function Task({id, changeTaskStatus}: TaskProps) {
     const task = useTypedSelector(state => taskByIdSelector(id, state));
+    const dispatch = useDispatch();
 
     const [title, setTitle] = useState(task.title);
     const [isEdited, setIsEdited] = useState(false);
@@ -33,6 +35,33 @@ export function Task({id, changeTaskStatus, changeTaskTitle}: TaskProps) {
         if(title === task.title) return;
         toggleEdited();
         changeTaskTitle({id: task.id, newTitle: title});
+    }
+
+    const changeTaskTitle = async (taskUpdate: TaskTitleUpdate) => {
+        try {
+            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE, payload: {...taskUpdate}});
+
+            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${taskUpdate.id}`,
+                {
+                    method: "PATCH",
+                    headers:{"Content-Type": "application/json"},
+                    body: JSON.stringify({"title": taskUpdate.newTitle})
+                } 
+            );
+
+            if(!response.ok){
+                throw new Error(`Failed to update task title, status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS, payload: data})
+        }
+        catch {
+            setTitle(task.title);
+            dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_ERROR, 
+                payload: "Error occured while updating task title"
+            })
+        }
     }
     
     return (
