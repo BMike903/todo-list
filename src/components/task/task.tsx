@@ -92,7 +92,8 @@ export function Task({id}: TaskProps) {
         <Card sx={{margin: "5px"}}>
             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
                 <IconButton sx={{flex: "5", maxHeight: "40px"}} color="primary" 
-                    onClick={() => changeTaskStatus(task)} disabled={isEdited}
+                    onClick={() => changeTaskStatus(task)} 
+                    disabled={isEdited || task.updatingPending || task.deletingPending}
                 >
                     {task.completed ? <CheckBoxOutlineBlank/> : <CheckBox/>}
                 </IconButton>
