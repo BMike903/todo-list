@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { Card, IconButton, Input, Stack } from "@mui/material";
 import { CheckBox, CheckBoxOutlineBlank, Edit, Done, Undo } from "@mui/icons-material";
@@ -19,7 +19,12 @@ export function Task({id, changeTaskStatus, changeTaskTitle}: TaskProps) {
     const [title, setTitle] = useState(task.title);
     const [isEdited, setIsEdited] = useState(false);
     const toggleEdited = () => setIsEdited(!isEdited);
+    const ref = useRef<HTMLInputElement>();
 
+    const onEditClick = async () => {
+        await toggleEdited();
+        ref.current?.focus();
+    }
     const onUndoClick = () => {
         toggleEdited();
         setTitle(task.title);
@@ -41,13 +46,14 @@ export function Task({id, changeTaskStatus, changeTaskTitle}: TaskProps) {
 
                 <Input disableUnderline multiline sx={{flex: "85"}} value={title}
                     onChange={e => setTitle(e.target.value)} 
-                    disabled={!isEdited || task.updatingPending || task.deletingPending} 
+                    disabled={!isEdited || task.updatingPending || task.deletingPending}
+                    inputRef={ref} 
                 />
 
                 <Stack direction="row" sx={{flex: "10"}}>
                     {!isEdited ? 
                         <IconButton sx={{maxHeight: "40px"}} color="secondary"
-                            onClick={toggleEdited}
+                            onClick={() => onEditClick()}
                             disabled={task.updatingPending || task.deletingPending} 
                         >
                             <Edit/>
