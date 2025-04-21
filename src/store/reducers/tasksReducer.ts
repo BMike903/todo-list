@@ -7,7 +7,6 @@ const initialState: TasksState = {
     addingTask: false,
     addingTaskError: null,
     updatingTaskError: null,
-    deletingTaskError: null,
     updatingTaskTitleError: null
 }
 
@@ -21,8 +20,6 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
             return {...state, loading: false, error: action.payload};
         case TasksActionTypes.CLEAR_UPDATING_TASK_ERROR:
             return {...state, updatingTaskError: null}
-        case TasksActionTypes.CLEAR_DELETING_TASK_ERROR:
-            return {...state, deletingTaskError: null}
         case TasksActionTypes.CLEAR_UPDATING_TASK_TITLE_ERROR:
             return {...state, updatingTaskTitleError: null}
         case TasksActionTypes.ADD_TASK:
@@ -55,26 +52,6 @@ export const TasksReducer = (state = initialState, action: TasksAction | TaskAct
         case TaskActionTypes.CHANGE_TASK_STATUS_ERROR: {
             const newTasks = state.tasks.map((task) => {
                 return {...task, updating: false, updatingPending: false}
-            })
-            return {...state, tasks: newTasks, updatingTaskError: action.payload};
-        }
-        case TaskActionTypes.DELETE_TASK: {
-            let pendingTask = action.payload;
-            pendingTask = {...pendingTask, deletingPending: true}
-            const newTasks = state.tasks.map((task) => {
-                if(task.id !== pendingTask.id) { return task;}
-                return pendingTask;
-            });
-            return {...state, tasks: newTasks}
-        }
-        case TaskActionTypes.DELETE_TASK_SUCCESS: {
-            const deletedTask = action.payload;
-            const newTasks = state.tasks.filter((task) => task.id !== deletedTask.id)
-            return {...state, tasks: newTasks}
-        }
-        case TaskActionTypes.DELETE_TASK_ERROR: {
-            const newTasks = state.tasks.map((task) => {
-                return {...task, updatingPending: false, deletingPending: false}
             })
             return {...state, tasks: newTasks, updatingTaskError: action.payload};
         }

@@ -1,5 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { TasksAction, TasksActionTypes, TaskActionTypes, TaskAction, Task } from "../../types/tasks"
+import { TasksAction, TasksActionTypes, Task } from "../../types/tasks"
 
 export const fetchTasks = (id: number): any => {
     return async (dispatch: Dispatch<TasksAction>) => {
@@ -24,30 +24,6 @@ export const fetchTasks = (id: number): any => {
 
 export const clearUpdateTaskStatusError = (): any => {
     return {type: TasksActionTypes.CLEAR_UPDATING_TASK_ERROR};
-}
-
-export const deleteTask = (task: Task): any => {
-    return async (dispatch: Dispatch<TaskAction>) => {
-        try{
-            dispatch({type: TaskActionTypes.DELETE_TASK, payload: task});
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${task.id}`,
-                                            { method: "DELETE"} );
-            if(!response.ok){
-                throw new Error(`Failed to delete task, status: ${response.status}`);
-            }
-
-            dispatch({type: TaskActionTypes.DELETE_TASK_SUCCESS, payload: task})
-        }
-        catch{
-            dispatch({type: TaskActionTypes.DELETE_TASK_ERROR, 
-                payload: "Error occured while deleting task"
-            })
-        }
-    }
-}
-
-export const clearDeletingTaskError = (): any => {
-    return {type: TasksActionTypes.CLEAR_DELETING_TASK_ERROR};
 }
 
 

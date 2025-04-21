@@ -20,9 +20,8 @@ function TaskList(){
 
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
-        deletingTaskError, updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, clearUpdateTaskStatusError,
-        clearDeletingTaskError, clearUpdateTaskTitleError,
+        updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
+    const {fetchTasks, clearUpdateTaskStatusError, clearUpdateTaskTitleError,
         addTaskActon, addTaskSuccessActon} = useTasksActions();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,8 +71,6 @@ function TaskList(){
             fetchTasks(user.id);
         }
 	}
-
-    
 
 	useEffect(() => {
 		loadTasks();
@@ -178,7 +175,6 @@ function TaskList(){
             {renderModal()}
             {renderError(updatingTaskError, clearUpdateTaskStatusError)}
             {renderError(updatingTaskTitleError, clearUpdateTaskTitleError)}
-            {renderError(deletingTaskError, clearDeletingTaskError)}
             {renderError(addingTaskError, clearAddTaskErrorActon)}
             {renderTasks()}
         </>

@@ -93,14 +93,14 @@ export function Task({id}: TaskProps) {
             <Stack  direction="row" sx={{ justifyContent: "space-evenly" }}>
                 <IconButton sx={{flex: "5", maxHeight: "40px"}} color="primary" 
                     onClick={() => changeTaskStatus(task)} 
-                    disabled={isEdited || task.updatingPending || task.deletingPending}
+                    disabled={isEdited || task.updatingPending}
                 >
                     {task.completed ? <CheckBoxOutlineBlank/> : <CheckBox/>}
                 </IconButton>
 
                 <Input disableUnderline multiline sx={{flex: "85"}} value={title}
                     onChange={e => setTitle(e.target.value)} 
-                    disabled={!isEdited || task.updatingPending || task.deletingPending}
+                    disabled={!isEdited || task.updatingPending}
                     inputRef={ref} 
                 />
 
@@ -108,19 +108,19 @@ export function Task({id}: TaskProps) {
                     {!isEdited ? 
                         <IconButton sx={{maxHeight: "40px"}} color="secondary"
                             onClick={() => onEditClick()}
-                            disabled={task.updatingPending || task.deletingPending} 
+                            disabled={task.updatingPending} 
                         >
                             <Edit/>
                         </IconButton>
                     :
                         <>
                         <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={onDoneClick}
-                            disabled={task.updatingPending || task.deletingPending} 
+                            disabled={task.updatingPending} 
                         >
                             <Done/>
                         </IconButton>
                         <IconButton sx={{maxHeight: "40px"}} color="secondary" onClick={onUndoClick} 
-                            disabled={task.updatingPending || task.deletingPending} 
+                            disabled={task.updatingPending} 
                         >
                             <Undo/>
                         </IconButton>
