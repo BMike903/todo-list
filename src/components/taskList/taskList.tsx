@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton } from "@mui/material";
+import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import { AddTask } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
 import { clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 import { completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
 import { Task } from "../task/task";
-import { AddTaskModal } from "../addTaskModal/addTaskModal";
 
 function TaskList(){
     const dispatch = useDispatch();
@@ -19,18 +17,10 @@ function TaskList(){
     const uncompletedTasks = useTypedSelector(uncompletedTasksSelector);
 
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
-    const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
+    const { loading: tasksLoading, error: tasksError, updatingTaskError,
         updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
     const {fetchTasks, clearUpdateTaskStatusError, clearUpdateTaskTitleError} = useTasksActions();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleModalOpen = () => setIsModalOpen(true);
-    const handleModalClose = () => {
-        if(addingTask) {
-            return
-        };
-        setIsModalOpen(false)
-    };
 
     const loadTasks = async () => {
         if(userLoading){
@@ -74,10 +64,6 @@ function TaskList(){
         }
     }
 
-    const renderModal = () => {
-        return <AddTaskModal isOpen={isModalOpen} onModalClose={handleModalClose}/>
-    }
-
     const renderTasks = () => {
         const renderTasksSkeleton = (count = 8) => {
             const skeletons = [];
@@ -103,7 +89,6 @@ function TaskList(){
                     <Grid2 sx={{width: {sm: "49%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
-                            <IconButton loading={addingTask} color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
                         </Stack>
                         <Stack>
                             {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
@@ -126,7 +111,6 @@ function TaskList(){
 
     return(
         <>
-            {renderModal()}
             {renderError(updatingTaskError, clearUpdateTaskStatusError)}
             {renderError(updatingTaskTitleError, clearUpdateTaskTitleError)}
             {renderError(addingTaskError, clearAddTaskErrorActon)}

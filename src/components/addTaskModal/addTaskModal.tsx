@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Button, Typography, Stack, Modal, Box, TextField } from "@mui/material";
+import { Button, Typography, Stack, Modal, Box, TextField, IconButton } from "@mui/material";
+import { AddTask } from "@mui/icons-material";
 
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { addTaskActon, addTaskSuccessActon, addTaskErrorAction } from "../../store/action-creators/tasks";
 
-type addTaskModalProps = {
-    isOpen: boolean,
-    onModalClose: () => void
-}
-
-export function AddTaskModal({isOpen, onModalClose}: addTaskModalProps) {
+export function AddTaskModal() {
     const dispatch = useDispatch();
+    const {addingTask} = useTypedSelector(state => state.tasks);
+
     const [title, setTitle] = useState("");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => {
+        if(addingTask) {
+            return
+        };
+        setIsModalOpen(false)
+    };
+
     const handleAddTask = async () => {
-        
         try {
             dispatch(addTaskActon());
             const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
@@ -37,11 +45,14 @@ export function AddTaskModal({isOpen, onModalClose}: addTaskModalProps) {
         }catch{
             dispatch(addTaskErrorAction("Error occured while trying to add task"));
         }
-
-        onModalClose();
+        handleModalClose();
     }
+
     return(
-        <Modal keepMounted open={isOpen} onClose={onModalClose} >
+        <>
+        <IconButton loading={addingTask} color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
+
+        <Modal keepMounted open={isModalOpen} onClose={handleModalClose} >
             <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                     width: 800, height: 150,  bgcolor: 'background.paper', border: '2px solid #000',
                     boxShadow: 24, p: 4}}
@@ -54,5 +65,6 @@ export function AddTaskModal({isOpen, onModalClose}: addTaskModalProps) {
                 </Stack>
             </Box>
         </Modal>
+        </>
     )
 }
