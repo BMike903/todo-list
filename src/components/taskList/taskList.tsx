@@ -99,7 +99,7 @@ function TaskList(){
         }
 		else{
             return(
-                <Grid2 container spacing={1} sx={{flexDirection: {sm: "row", xs: "column"}, width: {sm: "100%", xs: "100%"}}}>
+                <Grid2 container spacing={1} sx={{flexDirection: {sm: "row", xs: "column"}, width: {sm: "100%", xs: "100%"}, justifyContent: "space-around"}}>
                     <Grid2 sx={{width: {sm: "49%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
