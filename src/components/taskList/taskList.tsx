@@ -113,7 +113,6 @@ function TaskList(){
                     <Grid2 sx={{width: {lg: "45%", md: "90%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
-                            <IconButton color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
                         </Stack>
                         <Stack spacing={2}>
                         {(tasksLoading || userLoading) ? renderTasksSkeleton() : 
