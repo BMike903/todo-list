@@ -99,8 +99,8 @@ function TaskList(){
         }
 		else{
             return(
-                <Grid2 container spacing={1} sx={{flexDirection: {lg: "row", sm: "row"}, width: {lg: "100%", sm: "100%"}}}>
-                    <Grid2 sx={{width: {lg: "49%", sm: "49%"}}}>
+                <Grid2 container spacing={1} sx={{flexDirection: {sm: "row", xs: "column"}, width: {sm: "100%", xs: "100%"}}}>
+                    <Grid2 sx={{width: {sm: "49%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Unfinished tasks</Typography>
                             <IconButton loading={addingTask} color="secondary" onClick={handleModalOpen}><AddTask/></IconButton>
@@ -110,7 +110,7 @@ function TaskList(){
                                 renderTasksByCompletion(false)}
                         </Stack>
                     </Grid2>
-                    <Grid2 sx={{width: {lg: "49%", sm: "49%"}}}>
+                    <Grid2 sx={{width: {sm: "49%"}}}>
                         <Stack direction={"row"} justifyContent={"center"}>
                             <Typography variant="h4" textAlign={"center"}>Finished tasks</Typography>
                         </Stack>
