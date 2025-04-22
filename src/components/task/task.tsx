@@ -104,7 +104,7 @@ export function Task({id}: TaskProps) {
                     inputRef={ref} 
                 />
 
-                <Stack direction="row" sx={{flex: "10"}}>
+                <Stack direction="row" sx={{flex: "10", justifyContent: "right"}}>
                     {!isEdited ? 
                         <IconButton sx={{maxHeight: "40px"}} color="secondary"
                             onClick={() => onEditClick()}
