@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton, Modal, Box, TextField } from "@mui/material";
+import { Button, Typography, Stack, Snackbar, Grid2, Collapse, Skeleton, IconButton } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import { AddTask } from "@mui/icons-material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useTasksActions } from "../../hooks/useActions";
-import { addTaskErrorAction, clearAddTaskErrorActon } from "../../store/action-creators/tasks";
+import { clearAddTaskErrorActon } from "../../store/action-creators/tasks";
 import { completedTasksSelector, uncompletedTasksSelector } from "../../store/selectors/tasksSelectors";
 import { Task } from "../task/task";
-
+import { AddTaskModal } from "../addTaskModal/addTaskModal";
 
 function TaskList(){
     const dispatch = useDispatch();
@@ -21,8 +21,7 @@ function TaskList(){
     const {user, loading: userLoading, error: userError} = useTypedSelector(state => state.user);
     const { loading: tasksLoading, error: tasksError, addingTask, updatingTaskError,
         updatingTaskTitleError, addingTaskError} = useTypedSelector(state => state.tasks);
-    const {fetchTasks, clearUpdateTaskStatusError, clearUpdateTaskTitleError,
-        addTaskActon, addTaskSuccessActon} = useTasksActions();
+    const {fetchTasks, clearUpdateTaskStatusError, clearUpdateTaskTitleError} = useTasksActions();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleModalOpen = () => setIsModalOpen(true);
@@ -32,36 +31,6 @@ function TaskList(){
         };
         setIsModalOpen(false)
     };
-
-    const [newTaskTitle, setNewTaskTitle] = useState("");
-    const handleAddTask = async () => {
-        setNewTaskTitle("");
-        try {
-            dispatch(addTaskActon());
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/`,
-                {
-                    method: "POST",
-                    headers:{"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        "userId": 4,
-                        "title": newTaskTitle,
-                        "completed": false
-                    })
-                } 
-            );
-
-            if(!response.ok) {
-                throw new Error("Error occured while adding new task");
-            }
-
-            const data = await response.json();           
-            dispatch(addTaskSuccessActon(data));
-        }catch{
-            dispatch(addTaskErrorAction("Error occured while trying to add task"));
-        }
-
-        handleModalClose();
-    }
 
     const loadTasks = async () => {
         if(userLoading){
@@ -106,21 +75,7 @@ function TaskList(){
     }
 
     const renderModal = () => {
-        return(
-            <Modal keepMounted open={isModalOpen} onClose={handleModalClose} >
-                <Box sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                        width: 800, height: 150,  bgcolor: 'background.paper', border: '2px solid #000',
-                        boxShadow: 24, p: 4}}
-                >
-                    <Typography variant="h5">Add new task</Typography>
-                    <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
-                        <TextField onChange={e => setNewTaskTitle(e.target.value)} 
-                            multiline fullWidth value={newTaskTitle} />
-                        <Button onClick={handleAddTask} variant="contained" color="secondary">AddTask</Button>
-                    </Stack>
-                </Box>
-            </Modal>
-        )
+        return <AddTaskModal isOpen={isModalOpen} onModalClose={handleModalClose}/>
     }
 
     const renderTasks = () => {
