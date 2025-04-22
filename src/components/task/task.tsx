@@ -52,7 +52,12 @@ export function Task({id}: TaskProps) {
                 throw new Error(`Failed to update task title, status: ${response.status}`);
             }
 
-            const data = await response.json();
+            let data = await response.json();
+
+            if(!("id" in data)) {
+                data = {...data, id: 201}
+            }
+            
             dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS, payload: data})
         }
         catch {
@@ -79,6 +84,7 @@ export function Task({id}: TaskProps) {
             }
 
             const data = await response.json();
+
             dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS, payload: data})
         }
         catch{
