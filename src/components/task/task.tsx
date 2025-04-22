@@ -95,7 +95,7 @@ export function Task({id}: TaskProps) {
                     onClick={() => changeTaskStatus(task)} 
                     disabled={isEdited || task.updatingPending}
                 >
-                    {task.completed ? <CheckBoxOutlineBlank/> : <CheckBox/>}
+                    {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                 </IconButton>
 
                 <Input disableUnderline multiline sx={{flex: "85"}} value={title}
