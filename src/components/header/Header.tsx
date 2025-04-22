@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 
 import { Toolbar, AppBar, Typography, Stack} from "@mui/material";
+import {Divider} from "@mui/material";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import ThemeSwitcher from "../themeSwitcher/themeSwitcher";
 import { useUserActions } from "../../hooks/useActions";
+import { AddTaskModal } from "../addTaskModal/addTaskModal";
 
 function Header(){
     const {user, loading, error} = useTypedSelector(state => state.user);
@@ -30,8 +32,11 @@ function Header(){
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     Todo list
                 </Typography>
+                
                 <Stack direction="row" sx={{"alignItems": "center"}}>
-                    <Typography>{userName}</Typography>
+                    <Typography variant="subtitle1">{userName}</Typography>
+                    <AddTaskModal/>
+                    <Divider flexItem orientation="vertical"/>
                     <ThemeSwitcher/>
                 </Stack>
             </Toolbar>
