@@ -20,11 +20,9 @@ export function Task({id}: TaskProps) {
     const [title, setTitle] = useState(task.title);
     const [isEdited, setIsEdited] = useState(false);
     const toggleEdited = () => setIsEdited(!isEdited);
-    const ref = useRef<HTMLInputElement>();
 
-    const onEditClick = async () => {
-        await toggleEdited();
-        ref.current?.focus();
+    const onEditClick = () => {
+        toggleEdited();
     }
     const onUndoClick = () => {
         toggleEdited();
@@ -111,7 +109,7 @@ export function Task({id}: TaskProps) {
                 <Input disableUnderline multiline sx={{flex: "85"}} value={title}
                     onChange={e => setTitle(e.target.value)} 
                     disabled={!isEdited || task.updatingPending}
-                    inputRef={ref} 
+                    inputRef={input => input && input.focus()} 
                 />
 
                 <Stack direction="row" sx={{flex: "10", justifyContent: "right"}}>
