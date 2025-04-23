@@ -106,7 +106,7 @@ export function Task({id}: TaskProps) {
                     {task.completed ? <CheckBox/> : <CheckBoxOutlineBlank/>}
                 </IconButton>
 
-                <Input disableUnderline multiline sx={{flex: "85"}} value={title}
+                <Input disableUnderline={!isEdited} multiline sx={{flex: "85"}} value={title}
                     onChange={e => setTitle(e.target.value)} 
                     disabled={!isEdited || task.updatingPending}
                     inputRef={input => input && input.focus()} 
