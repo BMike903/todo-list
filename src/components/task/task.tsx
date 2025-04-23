@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Card, IconButton, Input, Stack } from "@mui/material";
