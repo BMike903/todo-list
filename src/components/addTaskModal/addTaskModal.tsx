@@ -60,7 +60,8 @@ export function AddTaskModal() {
                 <Typography variant="h5">Add new task</Typography>
                 <Stack direction={"row"} justifyContent={"space-between"} gap={2}>
                     <TextField onChange={e => setTitle(e.target.value)} 
-                        multiline fullWidth value={title} />
+                        multiline fullWidth value={title}
+                        inputRef={input => input && input.focus()} />
                     <Button onClick={handleAddTask} variant="contained" color="secondary">AddTask</Button>
                 </Stack>
             </Box>
