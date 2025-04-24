@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
 
 import { Button, Typography, Stack, Modal, Box, TextField, IconButton } from "@mui/material";
 import { AddTask } from "@mui/icons-material";
@@ -40,8 +41,8 @@ export function AddTaskModal() {
                 throw new Error("Error occured while adding new task");
             }
             setTitle("");
-            const data = await response.json();           
-            dispatch(addTaskSuccessActon(data));
+            const data = await response.json();
+            dispatch(addTaskSuccessActon({...data, id: nanoid()}));
         }catch{
             dispatch(addTaskErrorAction("Error occured while trying to add task"));
         }
