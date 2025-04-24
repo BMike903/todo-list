@@ -53,7 +53,7 @@ export function Task({id}: TaskProps) {
             let data = await response.json();
 
             if(!("id" in data)) {
-                data = {...data, id: 201}
+                data = {...data, id: task.id}
             }
             
             dispatch({type: TaskActionTypes.CHANGE_TASK_TITLE_SUCESS, payload: data})
@@ -84,7 +84,7 @@ export function Task({id}: TaskProps) {
             let data = await response.json();
 
             if(!("id" in data)) {
-                data = {...data, id: 201}
+                data = {...data, id: task.id}
             }
 
             dispatch({type: TaskActionTypes.CHANGE_TASK_STATUS_SUCCESS, payload: data})
