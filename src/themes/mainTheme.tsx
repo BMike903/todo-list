@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, alpha } from "@mui/material";
 import { blue, purple } from "@mui/material/colors";
 
 const mainTheme = createTheme({
@@ -16,6 +16,9 @@ const mainTheme = createTheme({
             main: purple[300],
             light: purple[300],
             dark: purple[900]
+        },
+        text: {
+            disabled: alpha("#000", 1),
         }
     }
 });
