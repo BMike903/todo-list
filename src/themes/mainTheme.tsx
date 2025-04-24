@@ -4,7 +4,14 @@ import { blue, purple } from "@mui/material/colors";
 const mainTheme = createTheme({
     colorSchemes:{
         light: true,
-        dark: true,
+        dark: {
+            palette: {
+                text: {
+                    disabled: alpha("#FFF", 1),
+                }
+            }
+        }
+        
     },
     palette:{
         primary:{
