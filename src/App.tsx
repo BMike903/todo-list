@@ -1,17 +1,24 @@
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 
-import Header from './components/header/header';
-import TaskList from './components/taskList/taskList';
+import Header from "./components/header/Header.tsx";
+import TaskList from "./components/taskList/taskList";
 
 function App() {
-	return (
-		<>
-			<Header/>
-			<Container sx={{marginTop: 10, display: "flex", justifyContent: "center", alignItems: "center"}}>
-				<TaskList />
-			</Container>
-		</>
-	)
+  return (
+    <>
+      <Header />
+      <Container
+        sx={{
+          marginTop: 10,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TaskList />
+      </Container>
+    </>
+  );
 }
 
 export default App;
